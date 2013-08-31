@@ -125,7 +125,7 @@ public class OpponentActivity extends ListActivity implements DialogInterface.On
         this.opponent = opponent;
         nameInput.setText(this.opponent.name);
         editDialog.show();
-        nameInput.setSelection(0);
+        nameInput.requestFocus();
     }
 
     @SuppressWarnings("deprecation")

@@ -18,7 +18,7 @@ import uk.org.nickmoore.runtrack.model.Role;
  */
 public class DatabaseManager extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "NetrunnerTracker";
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final Class[] DATABASE_ENUMS = {Faction.class, GameEnd.class, Identity.class,
             Role.class};
 
@@ -107,8 +107,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         for (Class clazz : DATABASE_ENUMS) {
             try {
                 for (Object object : clazz.getEnumConstants()) {
-                    // update string references
-                    converter.update(object);
+                    // update string references and insert new constants
+                    converter.store((Instantiable) object);
                 }
             } catch (UnmanageableClassException ex) {
                 // oops... (huh?)

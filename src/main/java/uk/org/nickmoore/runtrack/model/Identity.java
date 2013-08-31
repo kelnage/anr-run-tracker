@@ -35,7 +35,10 @@ public enum Identity implements Stringable {
     NEXT_DESIGN(R.string.next_design, R.string.next_design_short, Faction.HAAS_BIOROID),
     CEREBRAL_IMAGING(R.string.cerebral_imaging, R.string.cerebral_imaging_short,
             Faction.HAAS_BIOROID),
-    CUSTOM_BIOTICS(R.string.custom_biotics, R.string.custom_biotics_short, Faction.HAAS_BIOROID);
+    CUSTOM_BIOTICS(R.string.custom_biotics, R.string.custom_biotics_short, Faction.HAAS_BIOROID),
+    REINA_ROJA(R.string.reina_roja, R.string.reina_roja_short, Faction.ANARCH),
+    THE_COLLECTIVE(R.string.the_collective, R.string.the_collective_short, Faction.SHAPER),
+    LARAMY_FISK(R.string.laramy_fisk, R.string.laramy_fisk_short, Faction.CRIMINAL);
 
     public final int textId;
     public final int shortTextId;
@@ -58,12 +61,12 @@ public enum Identity implements Stringable {
     public static Identity[] getIdentities(Faction faction) {
         switch (faction) {
             case ANARCH:
-                return new Identity[]{NOISE, WHIZZARD};
+                return new Identity[]{NOISE, WHIZZARD, REINA_ROJA};
             case CRIMINAL:
-                return new Identity[]{GABRIEL_SANTIAGO, ANDROMEDA};
+                return new Identity[]{GABRIEL_SANTIAGO, ANDROMEDA, LARAMY_FISK};
             case SHAPER:
                 return new Identity[]{KATE_MAC_MACCAFFREY, CHAOS_THEORY, KIT, THE_PROFESSOR,
-                        EXILE};
+                        EXILE, THE_COLLECTIVE};
             case HAAS_BIOROID:
                 return new Identity[]{ENGINEERING_THE_FUTURE, STRONGER_TOGETHER, NEXT_DESIGN,
                         CUSTOM_BIOTICS, CEREBRAL_IMAGING};
@@ -80,8 +83,9 @@ public enum Identity implements Stringable {
     public static Identity[] getIdentities(Role role) {
         switch (role) {
             case RUNNER:
-                return new Identity[]{NOISE, WHIZZARD, GABRIEL_SANTIAGO, ANDROMEDA,
-                        KATE_MAC_MACCAFFREY, CHAOS_THEORY, KIT, THE_PROFESSOR, EXILE};
+                return new Identity[]{NOISE, WHIZZARD, REINA_ROJA, GABRIEL_SANTIAGO, ANDROMEDA,
+                        LARAMY_FISK, KATE_MAC_MACCAFFREY, CHAOS_THEORY, KIT, THE_PROFESSOR, EXILE,
+                        THE_COLLECTIVE};
             case CORPORATION:
                 return new Identity[]{ENGINEERING_THE_FUTURE, STRONGER_TOGETHER, NEXT_DESIGN,
                         CUSTOM_BIOTICS, CEREBRAL_IMAGING, PERSONAL_EVOLUTION,

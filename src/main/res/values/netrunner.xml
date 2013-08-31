@@ -55,5 +55,11 @@
     <string name="kit_short">Kit</string>
     <string name="exile">Exile</string>
     <string name="exile_short">Exile</string>
+    <string name="reina_roja">Reina Roja</string>
+    <string name="reina_roja_short">Reina</string>
+    <string name="the_collective">The Collective</string>
+    <string name="the_collective_short">Collective</string>
+    <string name="laramy_fisk">Laramy Fisk</string>
+    <string name="laramy_fisk_short">Fisk</string>
 
 </resources>

@@ -1,0 +1,94 @@
+package uk.org.nickmoore.runtrack.model;
+
+import android.content.Context;
+
+import uk.org.nickmoore.runtrack.R;
+
+/**
+ * The current list of released Identities for Netrunner.
+ */
+@SuppressWarnings("WeakerAccess")
+public enum Identity implements Stringable {
+    NOISE(R.string.noise, R.string.noise_short, Faction.ANARCH),
+    WHIZZARD(R.string.whizzard, R.string.whizzard_short, Faction.ANARCH),
+    GABRIEL_SANTIAGO(R.string.gabe, R.string.gabe_short, Faction.CRIMINAL),
+    ANDROMEDA(R.string.andromeda, R.string.andromeda_short, Faction.CRIMINAL),
+    KATE_MAC_MACCAFFREY(R.string.kate, R.string.kate_short, Faction.SHAPER),
+    CHAOS_THEORY(R.string.chaos_theory, R.string.chaos_theory_short, Faction.SHAPER),
+    ENGINEERING_THE_FUTURE(R.string.engineering_the_future, R.string.engineering_the_future_short,
+            Faction.HAAS_BIOROID),
+    STRONGER_TOGETHER(R.string.stronger_together, R.string.stronger_together_short,
+            Faction.HAAS_BIOROID),
+    PERSONAL_EVOLUTION(R.string.personal_evolution, R.string.personal_evolution_short,
+            Faction.JINTEKI),
+    REPLICATING_PERFECTION(R.string.replicating_perfection, R.string.replicating_perfection_short,
+            Faction.JINTEKI),
+    MAKING_NEWS(R.string.making_news, R.string.making_news_short, Faction.NBN),
+    THE_WORLD_IS_YOURS(R.string.the_world_is_yours, R.string.the_world_is_yours_short, Faction.NBN),
+    BUILDING_A_BETTER_WORLD(R.string.building_a_better_world,
+            R.string.building_a_better_world_short, Faction.WEYLAND),
+    BECAUSE_WE_BUILT_IT(R.string.because_we_built_it, R.string.because_we_built_it_short,
+            Faction.WEYLAND),
+    THE_PROFESSOR(R.string.the_professor, R.string.the_professor_short, Faction.SHAPER),
+    KIT(R.string.kit, R.string.kit_short, Faction.SHAPER),
+    EXILE(R.string.exile, R.string.exile_short, Faction.SHAPER),
+    NEXT_DESIGN(R.string.next_design, R.string.next_design_short, Faction.HAAS_BIOROID),
+    CEREBRAL_IMAGING(R.string.cerebral_imaging, R.string.cerebral_imaging_short,
+            Faction.HAAS_BIOROID),
+    CUSTOM_BIOTICS(R.string.custom_biotics, R.string.custom_biotics_short, Faction.HAAS_BIOROID);
+
+    public final int textId;
+    public final int shortTextId;
+    public final Faction faction;
+
+    private Identity(int textId, int shortTextId, Faction faction) {
+        this.textId = textId;
+        this.shortTextId = shortTextId;
+        this.faction = faction;
+    }
+
+    @Override
+    public CharSequence toCharSequence(Context context, boolean shortVersion) {
+        if (shortVersion) {
+            return faction.toCharSequence(context, true) + " - " + context.getText(shortTextId);
+        }
+        return faction.toCharSequence(context, false) + " - " + context.getText(textId);
+    }
+
+    public static Identity[] getIdentities(Faction faction) {
+        switch (faction) {
+            case ANARCH:
+                return new Identity[]{NOISE, WHIZZARD};
+            case CRIMINAL:
+                return new Identity[]{GABRIEL_SANTIAGO, ANDROMEDA};
+            case SHAPER:
+                return new Identity[]{KATE_MAC_MACCAFFREY, CHAOS_THEORY, KIT, THE_PROFESSOR,
+                        EXILE};
+            case HAAS_BIOROID:
+                return new Identity[]{ENGINEERING_THE_FUTURE, STRONGER_TOGETHER, NEXT_DESIGN,
+                        CUSTOM_BIOTICS, CEREBRAL_IMAGING};
+            case JINTEKI:
+                return new Identity[]{PERSONAL_EVOLUTION, REPLICATING_PERFECTION};
+            case NBN:
+                return new Identity[]{MAKING_NEWS, THE_WORLD_IS_YOURS};
+            case WEYLAND:
+                return new Identity[]{BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT};
+        }
+        return Identity.values();
+    }
+
+    public static Identity[] getIdentities(Role role) {
+        switch (role) {
+            case RUNNER:
+                return new Identity[]{NOISE, WHIZZARD, GABRIEL_SANTIAGO, ANDROMEDA,
+                        KATE_MAC_MACCAFFREY, CHAOS_THEORY, KIT, THE_PROFESSOR, EXILE};
+            case CORPORATION:
+                return new Identity[]{ENGINEERING_THE_FUTURE, STRONGER_TOGETHER, NEXT_DESIGN,
+                        CUSTOM_BIOTICS, CEREBRAL_IMAGING, PERSONAL_EVOLUTION,
+                        REPLICATING_PERFECTION, MAKING_NEWS, THE_WORLD_IS_YOURS,
+                        BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT};
+        }
+        return Identity.values();
+    }
+
+}

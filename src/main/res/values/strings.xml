@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Run Tracker</string>
+    <string name="action_settings">Settings</string>
+    <string name="corporation">Corporation</string>
+    <string name="runner">Runner</string>
+    <string name="agendas">Agendas</string>
+    <string name="flatline">Flatline</string>
+    <string name="deckout">Deck Out</string>
+    <string name="timeout">Time Out</string>
+    <string name="win">Win</string>
+    <string name="lose">Loss</string>
+    <string name="draw">Draw</string>
+    <string name="player">Player</string>
+    <string name="opponent">Opponent</string>
+    <string name="playingAs">Playing As</string>
+    <string name="playerRole">Your Role</string>
+    <string name="playerFact">Your Faction</string>
+    <string name="playerIdent">Your Identity</string>
+    <string name="playerAgendas">Your Agendas</string>
+    <string name="oppFact">Their Faction</string>
+    <string name="oppIdent">Their Identity</string>
+    <string name="oppAgendas">Their Agendas</string>
+    <string name="gameEnd">Game End</string>
+    <string name="save">Save</string>
+    <string name="notes">Notes</string>
+    <string name="logo_descr">Netrunner Game Tracker Logo</string>
+    <string name="new_game">New Game</string>
+    <string name="new_match">New Match</string>
+    <string name="statistics">Statistics</string>
+    <string name="game_title">Game</string>
+    <string name="history">Recent History</string>
+    <string name="about">About</string>
+    <string name="about_text">Netrunner Game Tracker tracks your games of Android: Netrunner and
+        provides statistics based on your performance with and against different factions,
+        identities and opponents.\n\nAndroid: Netrunner and other associated trademarks of Fantasy
+        Flight Games are used without permission.\n\nThe Android robot is reproduced or modified
+        from work created and shared by Google and used according to terms described in the Creative
+        Commons 3.0 Attribution License.
+    </string>
+    <string name="add_opponent">Add an opponent</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="add">Add</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="delete_opponent_title">Delete Opponent %s?</string>
+    <string name="delete_opponent">Are you sure you wish to delete the opponent %s? All your games
+        against them will also be removed.
+    </string>
+    <string name="opponent_menu">Opponent:</string>
+    <string name="played_as_menu">Played As:</string>
+    <string name="against_menu">Against:</string>
+    <string name="coming_soon">Coming soon!</string>
+    <string name="date">Date</string>
+    <string name="invalid_date">Invalid date!</string>
+    <string name="delete_game_title">Delete Game Against %s?</string>
+    <string name="delete_game">Are you sure you wish to delete the game against %s?</string>
+    <string name="vs">vs</string>
+    <string name="game_short_title">%1$s %2$s against %3$s</string>
+    <string name="a_bracket_b">%1$s (%2$d)</string>
+    <string name="role_win_rate">Role Win Rate</string>
+    <string name="runner_faction_win_rate">Runner Win Rate</string>
+    <string name="corp_faction_win_rate">Corporation Win Rate</string>
+    <string name="zero">0</string>
+    <string name="overall_win_rate">Overall Win Rate</string>
+
+</resources>

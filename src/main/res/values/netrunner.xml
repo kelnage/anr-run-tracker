@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="anarch">Anarch</string>
+    <string name="anarch_short">Anarch</string>
+    <string name="noise">Noise</string>
+    <string name="noise_short">Noise</string>
+    <string name="whizzard">Whizzard</string>
+    <string name="whizzard_short">Whizzard</string>
+    <string name="criminal">Criminal</string>
+    <string name="criminal_short">Crim</string>
+    <string name="gabe">Gabriel Santiago</string>
+    <string name="gabe_short">Gabe</string>
+    <string name="andromeda">Andromeda</string>
+    <string name="andromeda_short">Andy</string>
+    <string name="shaper">Shaper</string>
+    <string name="shaper_short">Shaper</string>
+    <string name="kate">Kate \"Mac\" MacCaffrey</string>
+    <string name="kate_short">Kate</string>
+    <string name="chaos_theory">Chaos Theory</string>
+    <string name="chaos_theory_short">CT</string>
+    <string name="haas_bioroid">Haas Bioroid</string>
+    <string name="haas_bioroid_short">HB</string>
+    <string name="engineering_the_future">Engineering The Future</string>
+    <string name="engineering_the_future_short">ETF</string>
+    <string name="stronger_together">Stronger Together</string>
+    <string name="stronger_together_short">ST</string>
+    <string name="jinteki">Jinteki</string>
+    <string name="jinteki_short">Jinteki</string>
+    <string name="personal_evolution">Personal Evolution</string>
+    <string name="personal_evolution_short">PE</string>
+    <string name="replicating_perfection">Replicating Perfection</string>
+    <string name="replicating_perfection_short">RP</string>
+    <string name="nbn">NBN</string>
+    <string name="nbn_short">NBN</string>
+    <string name="making_news">Making News</string>
+    <string name="making_news_short">Making News</string>
+    <string name="the_world_is_yours">The World Is Yours</string>
+    <string name="the_world_is_yours_short">TWIY</string>
+    <string name="weyland">Weyland</string>
+    <string name="weyland_short">Weyland</string>
+    <string name="building_a_better_world">Building A Better World</string>
+    <string name="building_a_better_world_short">BABW</string>
+    <string name="because_we_built_it">Because We Built It</string>
+    <string name="because_we_built_it_short">BWBI</string>
+    <string name="next_design">Next Design</string>
+    <string name="next_design_short">ND</string>
+    <string name="cerebral_imaging">Cerebral Imaging</string>
+    <string name="cerebral_imaging_short">CI</string>
+    <string name="custom_biotics">Custom Biotics</string>
+    <string name="custom_biotics_short">CB</string>
+    <string name="the_professor">The Professor</string>
+    <string name="the_professor_short">The Prof.</string>
+    <string name="kit">Rielle \"Kit\" Peddler</string>
+    <string name="kit_short">Kit</string>
+    <string name="exile">Exile</string>
+    <string name="exile_short">Exile</string>
+
+</resources>

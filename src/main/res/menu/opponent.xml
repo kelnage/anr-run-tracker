@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/add_opponent"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="@string/add_opponent"
+        android:titleCondensed="@string/add"
+        android:showAsAction="ifRoom" />
+</menu>

@@ -310,15 +310,24 @@ public class SQLiteClassConverter {
         return data;
     }
 
-    public void store(Instantiable instance) throws UnmanageableClassException {
-        if (instance.getId() == -1) {
-            insert(instance);
-        } else {
-            update(instance);
+    public void store(Object object) throws UnmanageableClassException {
+        if(object instanceof Enum<?>) {
+            long id = insert(object);
+            if(id == -1) {
+                update(object);
+            }
+        }
+        else if(object instanceof Instantiable) {
+            Instantiable instance = (Instantiable) object;
+            if(instance.getId() == -1) {
+                insert(instance);
+            } else {
+                update(instance);
+            }
         }
     }
 
-    public void insert(Object instance) throws UnmanageableClassException {
+    public long insert(Object instance) throws UnmanageableClassException {
         Class clazz = instance.getClass();
         String table = clazz.getSimpleName();
         long id = db.insert(table, null, insertValues(instance));
@@ -341,6 +350,7 @@ public class SQLiteClassConverter {
                 throw new UnmanageableClassException(clazz);
             }
         }
+        return id;
     }
 
     public void update(Object instance) throws UnmanageableClassException {

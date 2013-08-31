@@ -108,7 +108,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             try {
                 for (Object object : clazz.getEnumConstants()) {
                     // update string references and insert new constants
-                    converter.store((Instantiable) object);
+                    converter.store(object);
                 }
             } catch (UnmanageableClassException ex) {
                 // oops... (huh?)

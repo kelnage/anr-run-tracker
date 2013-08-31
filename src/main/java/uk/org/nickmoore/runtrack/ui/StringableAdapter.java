@@ -1,4 +1,4 @@
-package uk.org.nickmoore.runtrack;
+package uk.org.nickmoore.runtrack.ui;
 
 import android.content.Context;
 import android.database.DataSetObserver;

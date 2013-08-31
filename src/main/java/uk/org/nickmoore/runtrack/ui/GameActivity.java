@@ -25,7 +25,6 @@ import java.text.DateFormat;
 import java.util.Calendar;
 
 import uk.org.nickmoore.runtrack.R;
-import uk.org.nickmoore.runtrack.StringableAdapter;
 import uk.org.nickmoore.runtrack.database.DatabaseManager;
 import uk.org.nickmoore.runtrack.database.NoSuchInstanceException;
 import uk.org.nickmoore.runtrack.database.SQLiteClassConverter;

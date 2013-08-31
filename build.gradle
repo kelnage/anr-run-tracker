@@ -27,5 +27,5 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4:18.0.0'
-    compile group: 'com.androidplot', name: 'androidplot-core', version: '0.6.0-SNAPSHOT'
+    compile group: 'com.androidplot', name: 'androidplot-core', version: '0.6.1-SNAPSHOT'
 }

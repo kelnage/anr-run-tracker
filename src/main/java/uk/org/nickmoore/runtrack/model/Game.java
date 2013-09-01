@@ -51,7 +51,7 @@ public class Game extends Instantiable implements Serializable {
 
     public Result getPlayerResult() throws UninstantiatedException {
         throwIfNotInstantiated("getPlayerResult");
-        if (gameEnd == GameEnd.AGENDAS && playerAgendaScore == 7) {
+        if (gameEnd == GameEnd.AGENDAS && playerAgendaScore >= 7) {
             return Result.WIN;
         }
         if (gameEnd == GameEnd.TIMEOUT) {

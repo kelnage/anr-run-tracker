@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="inverted" format="boolean" />
+    <declare-styleable name="CounterView">
+        <attr name="allowNegative" format="boolean" />
+        <attr name="value" format="integer" />
+        <attr name="inverted" />
+    </declare-styleable>
+    <declare-styleable name="InvertibleEditText">
+        <attr name="inverted" />
+    </declare-styleable>
+    <declare-styleable name="InvertibleTextView">
+        <attr name="inverted" />
+    </declare-styleable>
+    <declare-styleable name="RotatableImageView">
+        <attr name="imageRotation" format="integer" />
+    </declare-styleable>
+</resources>

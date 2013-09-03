@@ -1,0 +1,157 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:runtrack="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".ui.GameTrackingActivity"
+    android:weightSum="1">
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
+
+
+        <view
+            class="uk.org.nickmoore.runtrack.ui.InvertibleTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/corporation"
+            android:id="@+id/corp_label"
+            runtrack:inverted="true"
+            android:gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:layout_weight="0.9">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center_horizontal">
+
+                <view
+                    class="uk.org.nickmoore.runtrack.ui.CounterView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/corp_click_counter"
+                    runtrack:inverted="true" />
+
+                <view
+                    class="uk.org.nickmoore.runtrack.ui.RotatableImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/corp_click_image"
+                    android:src="@drawable/click"
+                    android:cropToPadding="false"
+                    android:contentDescription="@string/click"
+                    runtrack:imageRotation="180" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center_horizontal">
+
+                <view
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    class="uk.org.nickmoore.runtrack.ui.CounterView"
+                    android:id="@+id/corp_credit_counter"
+                    runtrack:allowNegative="false"
+                    runtrack:inverted="true" />
+
+                <view
+                    class="uk.org.nickmoore.runtrack.ui.RotatableImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/corp_credit_image"
+                    android:src="@drawable/credit"
+                    android:cropToPadding="false"
+                    android:contentDescription="@string/credit"
+                    runtrack:imageRotation="180" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9"
+            android:baselineAligned="false"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center_horizontal" >
+
+                <view
+                    class="uk.org.nickmoore.runtrack.ui.CounterView"
+                    runtrack:inverted="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/runner_credit_counter"
+                    android:orientation="vertical" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/runner_credit_image"
+                    android:src="@drawable/credit"
+                    android:cropToPadding="false"
+                    android:contentDescription="@string/click" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center_horizontal" >
+
+                <view
+                    class="uk.org.nickmoore.runtrack.ui.CounterView"
+                    runtrack:allowNegative="false"
+                    runtrack:inverted="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/runner_click_counter"
+                    android:orientation="vertical" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/runner_click_image"
+                    android:src="@drawable/click"
+                    android:cropToPadding="false"
+                    android:contentDescription="@string/click" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <view
+            class="uk.org.nickmoore.runtrack.ui.InvertibleTextView"
+            runtrack:inverted="false"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/runner"
+            android:id="@+id/runner_label"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
+</LinearLayout>
+

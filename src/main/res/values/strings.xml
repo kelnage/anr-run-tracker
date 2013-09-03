@@ -66,5 +66,9 @@
     <string name="corp_faction_win_rate">Corporation Win Rate</string>
     <string name="zero">0</string>
     <string name="overall_win_rate">Overall Win Rate</string>
+    <string name="down_arrow">Down arrow</string>
+    <string name="up_arrow">Up arrow</string>
+    <string name="click">Click</string>
+    <string name="credit">Credit</string>
 
 </resources>

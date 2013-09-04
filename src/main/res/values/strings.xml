@@ -66,5 +66,7 @@
     <string name="corp_faction_win_rate">Corporation Win Rate</string>
     <string name="zero">0</string>
     <string name="overall_win_rate">Overall Win Rate</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
 
 </resources>

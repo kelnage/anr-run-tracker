@@ -18,6 +18,7 @@ public class Match extends Instantiable implements Serializable {
     public Game firstGame;
     @ForeignKey(aliasPrefix = "Second")
     public Game secondGame;
+    private Game currentGame;
 
     public Match() {
         setId(-1);
@@ -59,5 +60,16 @@ public class Match extends Instantiable implements Serializable {
             return "";
         }
         return String.format("%d", getId());
+    }
+
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public void setCurrentGame(Game currentGame) {
+        if(currentGame != firstGame && currentGame != secondGame) {
+            throw new IllegalArgumentException("currentGame must be either the first or second game");
+        }
+        this.currentGame = currentGame;
     }
 }

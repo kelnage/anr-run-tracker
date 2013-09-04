@@ -32,6 +32,7 @@ import uk.org.nickmoore.runtrack.database.UnmanageableClassException;
 import uk.org.nickmoore.runtrack.model.Game;
 import uk.org.nickmoore.runtrack.model.GameEnd;
 import uk.org.nickmoore.runtrack.model.Identity;
+import uk.org.nickmoore.runtrack.model.Match;
 import uk.org.nickmoore.runtrack.model.Opponent;
 import uk.org.nickmoore.runtrack.model.Role;
 
@@ -45,6 +46,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
 
     private boolean disableUpdates = false;
     private SQLiteClassConverter converter;
+    private Match match;
     private Game game;
     private Button opponent;
     private ToggleButton playerRole;
@@ -114,7 +116,19 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
         setupViews();
         converter = new SQLiteClassConverter(
                 new DatabaseManager(getApplicationContext()).getWritableDatabase());
-        if (getIntent().hasExtra("game")) {
+        if (getIntent().hasExtra("match")) {
+            match = (Match) getIntent().getSerializableExtra("match");
+            if(match == null) {
+                match = new Match();
+                match.firstGame = new Game();
+                match.secondGame = new Game();
+                match.setCurrentGame(match.firstGame);
+            }
+            if(game == null) {
+                game = match.getCurrentGame();
+            }
+        }
+        else if (getIntent().hasExtra("game")) {
             game = (Game) getIntent().getSerializableExtra("game");
             if (game == null) {
                 game = new Game();
@@ -154,6 +168,21 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                 .getPositionForItem(game.gameEnd), false);
         notes.setText(game.notes);
         date.setText(DateFormat.getDateInstance().format(game.getDate()));
+        if(match != null) {
+            // intentionally using memory references here
+            if(match.firstGame == game) {
+                cancel.setText(R.string.cancel);
+                save.setText(R.string.next);
+                opponent.setEnabled(true);
+                playerRole.setEnabled(true);
+            }
+            if(match.secondGame == game) {
+                cancel.setText(R.string.back);
+                save.setText(R.string.save);
+                opponent.setEnabled(false);
+                playerRole.setEnabled(false);
+            }
+        }
         disableUpdates = false;
     }
 
@@ -250,17 +279,53 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
             updateNotes();
             updateAgendaScores(playerAgenda);
             updateAgendaScores(opponentAgenda);
-            try {
-                converter.store(game);
-                finish();
-            } catch (UnmanageableClassException ex) {
-                // WTF?
+            if(match == null) {
+                try {
+                    converter.store(game);
+                    finish();
+                } catch (UnmanageableClassException ex) {
+                    //
+                }
+            }
+            else {
+                if(match.firstGame == game) {
+                    match.opponent = match.firstGame.opponent;
+                    match.secondGame.opponent = match.opponent;
+                    match.secondGame.date = match.firstGame.date;
+                    if(match.firstGame.playerIdentity.faction.getRole() == Role.CORPORATION) {
+                        match.secondGame.playerIdentity = Identity.getIdentities(Role.RUNNER)[0];
+                    }
+                    else {
+                        match.secondGame.playerIdentity = Identity.getIdentities(Role.CORPORATION)[0];
+                    }
+                    game = match.secondGame;
+                    match.setCurrentGame(match.secondGame);
+                    loadGame();
+                }
+                else if(match.secondGame == game) {
+                    try {
+                        converter.store(match.firstGame);
+                        converter.store(match.secondGame);
+                        converter.store(match);
+                    } catch(UnmanageableClassException ex) {
+                        //
+                    }
+                    finish();
+                }
             }
         }
         if (view.equals(cancel)) {
-            finish();
+            if(match != null && match.secondGame == game) {
+                match.setCurrentGame(match.firstGame);
+                game = match.firstGame;
+                loadGame();
+            }
+            else {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
         }
-        if (view.equals(opponent)) {
+        if (view.equals(opponent) && opponent.isEnabled()) {
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), OpponentActivity.class);
             startActivityForResult(intent, OPPONENT_REQUEST);

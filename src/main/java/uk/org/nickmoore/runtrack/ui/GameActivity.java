@@ -78,7 +78,22 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
         opponentAgendaView = (TextView) findViewById(R.id.oppAPValue);
         gameEnd = (Spinner) findViewById(R.id.gameEnd);
         gameEnd.setOnItemSelectedListener(this);
-        gameEnd.setAdapter(new StringableAdapter(this, GameEnd.values(), shortTitles));
+        gameEnd.setAdapter(new StringableAdapter(this, GameEnd.values(), shortTitles) {
+            @Override
+            protected View display(int i, View view) {
+                super.display(i, view);
+                if (view == null || view.getId() != android.R.layout.simple_list_item_1) {
+                    view = View.inflate(getApplicationContext(),
+                            android.R.layout.simple_list_item_1, null);
+                }
+                GameEnd end = (GameEnd) getItem(i);
+                TextView text = (TextView) view.findViewById(android.R.id.text1);
+                text.setText(end.toCharSequence(getApplicationContext(), shortTitles) + " " +
+                        game.getPlayerResult(end).toCharSequence(getApplicationContext(),
+                                shortTitles));
+                return view;
+            }
+        });
         notes = (EditText) findViewById(R.id.notes);
         notes.setOnFocusChangeListener(this);
         date = (Button) findViewById(R.id.gameDate);
@@ -155,6 +170,8 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
             playerIdentity.setSelection(opponentPos, false);
             opponentIdentity.setSelection(playerPos, false);
         }
+        game.playerIdentity = (Identity) playerIdentity.getSelectedItem();
+        game.opponentIdentity = (Identity) opponentIdentity.getSelectedItem();
     }
 
     @Override
@@ -192,6 +209,8 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
             game.opponentAgendaScore = opponentAgenda.getProgress();
             opponentAgendaView.setText(Integer.toString(game.opponentAgendaScore));
         }
+        // will notify DataSetObservers - TODO: can this be improved?
+        ((StringableAdapter) gameEnd.getAdapter()).setItems(GameEnd.values());
     }
 
     @Override
@@ -221,6 +240,8 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (disableUpdates) return;
         updateIdentities(b);
+        // will notify DataSetObservers - TODO: can this be improved?
+        ((StringableAdapter) gameEnd.getAdapter()).setItems(GameEnd.values());
     }
 
     @Override

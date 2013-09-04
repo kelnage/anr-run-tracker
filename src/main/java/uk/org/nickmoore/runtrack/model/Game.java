@@ -49,8 +49,7 @@ public class Game extends Instantiable implements Serializable {
         date = Math.round(new Date().getTime() / 1000f);
     }
 
-    public Result getPlayerResult() throws UninstantiatedException {
-        throwIfNotInstantiated("getPlayerResult");
+    public Result getPlayerResult(GameEnd gameEnd) {
         if (gameEnd == GameEnd.AGENDAS && playerAgendaScore >= 7) {
             return Result.WIN;
         }
@@ -68,6 +67,10 @@ public class Game extends Instantiable implements Serializable {
             return Result.WIN;
         }
         return Result.LOSE;
+    }
+
+    public Result getPlayerResult() throws UninstantiatedException {
+        return getPlayerResult(gameEnd);
     }
 
     public int getEffectivePlayerScore() throws UninstantiatedException {

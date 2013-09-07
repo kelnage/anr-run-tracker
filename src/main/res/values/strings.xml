@@ -60,6 +60,7 @@
     <string name="delete_game">Are you sure you wish to delete the game against %s?</string>
     <string name="vs">vs</string>
     <string name="game_short_title">%1$s %2$s against %3$s</string>
+    <string name="match_short_title">%1$s against %2$s</string>
     <string name="a_bracket_b">%1$s (%2$d)</string>
     <string name="role_win_rate">Role Win Rate</string>
     <string name="runner_faction_win_rate">Runner Win Rate</string>

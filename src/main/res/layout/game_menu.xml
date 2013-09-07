@@ -21,7 +21,8 @@
         android:layout_below="@+id/opponent_name"
         android:baselineAligned="false"
         android:weightSum="1"
-        android:paddingTop="2dp">
+        android:paddingTop="2dp"
+        android:id="@+id/first_game">
 
         <TextView
             android:layout_width="0dp"
@@ -45,6 +46,42 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/opponent_identity"
+            android:paddingStart="5dp"
+            android:layout_weight="0.45" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/first_game"
+        android:baselineAligned="false"
+        android:weightSum="1"
+        android:paddingTop="2dp"
+        android:id="@+id/second_game">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/player_identity2"
+            android:paddingStart="5dp"
+            android:layout_weight="0.45" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/vs"
+            android:id="@+id/textView3"
+            android:layout_weight="0.1"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/opponent_identity2"
             android:paddingStart="5dp"
             android:layout_weight="0.45" />
     </LinearLayout>

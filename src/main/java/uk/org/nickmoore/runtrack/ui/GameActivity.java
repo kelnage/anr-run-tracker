@@ -37,7 +37,7 @@ import uk.org.nickmoore.runtrack.model.Opponent;
 import uk.org.nickmoore.runtrack.model.Role;
 
 /**
- * An activity for editing and viewing games.
+ * An activity for editing and viewing games and matches.
  */
 public class GameActivity extends FragmentActivity implements AdapterView.OnItemSelectedListener,
         CompoundButton.OnCheckedChangeListener, View.OnFocusChangeListener, Button.OnClickListener,
@@ -124,6 +124,9 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                 match.secondGame = new Game();
                 match.setCurrentGame(match.firstGame);
             }
+            if(match.getCurrentGame() == null) {
+                match.setCurrentGame(match.firstGame);
+            }
             if(game == null) {
                 game = match.getCurrentGame();
             }
@@ -132,7 +135,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
             game = (Game) getIntent().getSerializableExtra("game");
             if (game == null) {
                 game = new Game();
-            } else if (!game.isInstantiated() && game.getId() != -1) {
+            } else if (!game.isInstantiated() && game.getId() != 0) {
                 try {
                     converter.retrieve(game);
                 } catch (UnmanageableClassException ex) {
@@ -144,7 +147,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
         } else {
             game = new Game();
         }
-        if (game.opponent.getId() == -1) {
+        if (game.opponent.getId() == 0) {
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), OpponentActivity.class);
             startActivityForResult(intent, OPPONENT_REQUEST);
@@ -154,16 +157,17 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
 
     private void loadGame() {
         disableUpdates = true;
-        Log.i(getClass().getSimpleName(), game.opponent.toString());
         opponent.setText(game.opponent.name);
         playerRole.setChecked(game.playerIdentity.faction.getRole().equals(Role.CORPORATION));
         updateIdentities(playerRole.isChecked());
         playerIdentity.setSelection(((StringableAdapter) playerIdentity.getAdapter())
                 .getPositionForItem(game.playerIdentity), false);
         playerAgenda.setProgress(game.playerAgendaScore);
+        playerAgendaView.setText(Integer.toString(game.playerAgendaScore));
         opponentIdentity.setSelection(((StringableAdapter) opponentIdentity.getAdapter())
                 .getPositionForItem(game.opponentIdentity), false);
         opponentAgenda.setProgress(game.opponentAgendaScore);
+        opponentAgendaView.setText(Integer.toString(game.opponentAgendaScore));
         gameEnd.setSelection(((StringableAdapter) gameEnd.getAdapter())
                 .getPositionForItem(game.gameEnd), false);
         notes.setText(game.notes);
@@ -175,12 +179,14 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                 save.setText(R.string.next);
                 opponent.setEnabled(true);
                 playerRole.setEnabled(true);
+                date.setEnabled(true);
             }
             if(match.secondGame == game) {
                 cancel.setText(R.string.back);
                 save.setText(R.string.save);
                 opponent.setEnabled(false);
                 playerRole.setEnabled(false);
+                date.setEnabled(false);
             }
         }
         disableUpdates = false;
@@ -195,12 +201,12 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                 shortTitles));
         opponentIdentity.setAdapter(new StringableAdapter(this,
                 Identity.getIdentities(opponentRole), shortTitles));
-        if (!disableUpdates) {
+        if(!disableUpdates) {
             playerIdentity.setSelection(opponentPos, false);
             opponentIdentity.setSelection(playerPos, false);
+            game.playerIdentity = (Identity) playerIdentity.getSelectedItem();
+            game.opponentIdentity = (Identity) opponentIdentity.getSelectedItem();
         }
-        game.playerIdentity = (Identity) playerIdentity.getSelectedItem();
-        game.opponentIdentity = (Identity) opponentIdentity.getSelectedItem();
     }
 
     @Override
@@ -230,6 +236,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
     }
 
     private void updateAgendaScores(SeekBar seekBar) {
+        if(disableUpdates) return;
         if (seekBar.equals(playerAgenda)) {
             game.playerAgendaScore = playerAgenda.getProgress();
             playerAgendaView.setText(Integer.toString(game.playerAgendaScore));
@@ -292,11 +299,15 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                     match.opponent = match.firstGame.opponent;
                     match.secondGame.opponent = match.opponent;
                     match.secondGame.date = match.firstGame.date;
-                    if(match.firstGame.playerIdentity.faction.getRole() == Role.CORPORATION) {
-                        match.secondGame.playerIdentity = Identity.getIdentities(Role.RUNNER)[0];
-                    }
-                    else {
-                        match.secondGame.playerIdentity = Identity.getIdentities(Role.CORPORATION)[0];
+                    if(match.secondGame.getId() == 0) {
+                        if(match.firstGame.playerIdentity.faction.getRole() == Role.CORPORATION) {
+                            match.secondGame.playerIdentity =
+                                    Identity.getIdentities(Role.RUNNER)[0];
+                        }
+                        else {
+                            match.secondGame.playerIdentity =
+                                    Identity.getIdentities(Role.CORPORATION)[0];
+                        }
                     }
                     game = match.secondGame;
                     match.setCurrentGame(match.secondGame);
@@ -307,6 +318,14 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                         converter.store(match.firstGame);
                         converter.store(match.secondGame);
                         converter.store(match);
+                        // this is a nasty hack to set the Match - preferably the
+                        // SQLiteClassConverter would do something clever here!
+                        if(match.firstGame.match == null || match.firstGame.match.getId() == 0) {
+                            match.firstGame.match = match;
+                            converter.update(match.firstGame);
+                            match.secondGame.match = match;
+                            converter.update(match.secondGame);
+                        }
                     } catch(UnmanageableClassException ex) {
                         //
                     }
@@ -339,7 +358,8 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                     Calendar c = Calendar.getInstance();
                     c.setTime(game.getDate());
                     return new DatePickerDialog(getActivity(), parent,
-                            c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                            c.get(Calendar.YEAR), c.get(Calendar.MONTH),
+                            c.get(Calendar.DAY_OF_MONTH));
                 }
 
                 @Override
@@ -376,7 +396,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                         loadGame();
                         break;
                     default:
-                        if (game.opponent.getId() == -1) {
+                        if (game.opponent.getId() == 0) {
                             finish();
                         }
                 }

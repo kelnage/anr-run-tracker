@@ -20,14 +20,16 @@ import android.widget.TextView;
 import uk.org.nickmoore.runtrack.R;
 import uk.org.nickmoore.runtrack.database.DatabaseManager;
 import uk.org.nickmoore.runtrack.database.InstantiableCursorAdapter;
+import uk.org.nickmoore.runtrack.database.NoSuchInstanceException;
 import uk.org.nickmoore.runtrack.database.SQLiteClassConverter;
 import uk.org.nickmoore.runtrack.database.UninstantiatedException;
 import uk.org.nickmoore.runtrack.database.UnmanageableClassException;
 import uk.org.nickmoore.runtrack.model.Game;
+import uk.org.nickmoore.runtrack.model.Match;
 import uk.org.nickmoore.runtrack.model.Opponent;
 
 /**
- * The activity that displays a list of games.
+ * The activity that displays a list of games and matches.
  */
 public class GameHistoryActivity extends ListActivity implements DialogInterface.OnClickListener {
     public final static int VIEW_GAME = 1;
@@ -45,28 +47,72 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
         shortTitles = display.getWidth() <= 320;
         converter = new SQLiteClassConverter(
                 new DatabaseManager(getApplicationContext()).getWritableDatabase());
-        recentGames = converter.findAll(Game.class, "Game.date DESC", "10",
-                new SQLiteClassConverter.Join(Opponent.class, "opponent"));
+        recentGames = converter.findAll(Game.class,
+                "Game.match IS NULL OR Game.match = 0 OR Game._id = First_Match_firstGame",
+                null, "Game.date DESC, Game.match ASC", "10",
+                new SQLiteClassConverter.Join(Opponent.class, "opponent"),
+                new SQLiteClassConverter.Join(Match.class, "match", "LEFT JOIN"));
         adapter = new InstantiableCursorAdapter<Game>(getApplicationContext(), recentGames,
                 R.layout.game_menu, converter, Game.class,
                 new InstantiableCursorAdapter.ViewRenderer<Game>() {
                     @Override
-                    public void populateView(Context context, View view, Game instance) {
-                        String result = instance.opponent.toString();
+                    public void populateView(Context context, View view, Game game,
+                                             Cursor cursor) {
+                        Match match = null;
+                        Game secondGame = null;
+                        if(game.match != null && game.match.getId() != 0) {
+                            view.findViewById(R.id.second_game).setVisibility(View.VISIBLE);
+                            try {
+                                converter.retrieve(game.match.secondGame);
+                            } catch (UnmanageableClassException ex) {
+                                Log.e(getClass().getSimpleName(), ex.toString());
+                            } catch (NoSuchInstanceException ex) {
+                                Log.e(getClass().getSimpleName(), ex.toString());
+                            }
+                            secondGame = game.match.secondGame;
+                            match = game.match;
+                            match.firstGame = game;
+                            match.instantiate();
+                        }
+                        else {
+                            // we won't have a second game, so hide it
+                            view.findViewById(R.id.second_game).setVisibility(View.GONE);
+                        }
+                        String result = game.opponent.toString();
                         try {
                             result = String.format(getString(R.string.game_short_title),
-                                    instance.gameEnd.toCharSequence(context, false),
-                                    instance.getPlayerResult().toCharSequence(context, false),
-                                    instance.opponent.name);
+                                    game.gameEnd.toCharSequence(context, false),
+                                    game.getPlayerResult().toCharSequence(context, false),
+                                    game.opponent.name);
                         } catch (UninstantiatedException ex) {
                             // Just use the default toString
                         }
                         String player = String.format(getString(R.string.a_bracket_b),
-                                instance.playerIdentity.toCharSequence(context, shortTitles),
-                                instance.playerAgendaScore);
+                                game.playerIdentity.toCharSequence(context, shortTitles),
+                                game.playerAgendaScore);
                         String opponent = String.format(getString(R.string.a_bracket_b),
-                                instance.opponentIdentity.toCharSequence(context, shortTitles),
-                                instance.opponentAgendaScore);
+                                game.opponentIdentity.toCharSequence(context, shortTitles),
+                                game.opponentAgendaScore);
+                        if(secondGame != null) {
+                            try {
+                                result = String.format(getString(R.string.match_short_title),
+                                        match.getPlayerResult().toCharSequence(context, false),
+                                        game.opponent.name);
+                            } catch(UninstantiatedException ex) {
+                                Log.i(getClass().getSimpleName(), match.toString());
+                                Log.e(getClass().getSimpleName(), ex.toString());
+                            }
+                            ((TextView) view.findViewById(R.id.player_identity2)).setText(
+                                    String.format(getString(R.string.a_bracket_b),
+                                            secondGame.playerIdentity.toCharSequence(context,
+                                                    shortTitles),
+                                            secondGame.playerAgendaScore));
+                            ((TextView) view.findViewById(R.id.opponent_identity2)).setText(
+                                    String.format(getString(R.string.a_bracket_b),
+                                            secondGame.opponentIdentity.toCharSequence(context,
+                                                    shortTitles),
+                                            secondGame.opponentAgendaScore));
+                        }
                         ((TextView) view.findViewById(R.id.opponent_name))
                                 .setText(result);
                         ((TextView) view.findViewById(R.id.player_identity))
@@ -85,11 +131,27 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        recentGames.moveToPosition(position);
-        Game game = converter.readCursor(Game.class, recentGames);
         Intent intent = new Intent();
         intent.setClass(getApplicationContext(), GameActivity.class);
-        intent.putExtra("game", game);
+        recentGames.moveToPosition(position);
+        Game game = converter.readCursor(Game.class, recentGames);
+        if(game.match != null && game.match.getId() != 0) {
+            game.match.firstGame = game;
+            try {
+                converter.retrieve(game.match.secondGame);
+                converter.retrieve(game.match.opponent);
+            } catch (UnmanageableClassException e) {
+                Log.e(getClass().getSimpleName(), e.toString());
+            } catch (NoSuchInstanceException e) {
+                Log.e(getClass().getSimpleName(), e.toString());
+            }
+            game.match.setCurrentGame(game);
+            game.match.instantiate();
+            intent.putExtra("match", game.match);
+        }
+        else {
+            intent.putExtra("game", game);
+        }
         startActivityForResult(intent, VIEW_GAME);
     }
 

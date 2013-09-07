@@ -15,7 +15,7 @@ public class Opponent extends Instantiable implements Serializable {
     public String name;
 
     public Opponent() {
-        setId(-1);
+        setId(0);
     }
 
     public Opponent(long id) {

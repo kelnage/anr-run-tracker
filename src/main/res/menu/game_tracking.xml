@@ -1,6 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    <item android:id="@+id/action_keep_alive"
+        android:title="@string/keep_alive"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:showAsAction="never"
+        android:checkable="true" />
+    <item android:id="@+id/action_disable_rotation"
+        android:title="@string/disable_rotation"
+        android:orderInCategory="110"
+        android:showAsAction="never"
+        android:checkable="true" />
 </menu>

@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.util.Log;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -404,6 +406,32 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.game, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_track_credits) {
+            updateNotes();
+            updateAgendaScores(playerAgenda);
+            updateAgendaScores(opponentAgenda);
+            try {
+                converter.store(game);
+            } catch (UnmanageableClassException ex) {
+                Log.e(getClass().getSimpleName(), ex.toString());
+            }
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), GameTrackingActivity.class);
+            intent.putExtra("game", game);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -73,5 +73,8 @@
     <string name="credit">Credit</string>
     <string name="next">Next</string>
     <string name="back">Back</string>
+    <string name="keep_alive">Keep screen alive</string>
+    <string name="disable_rotation">Disable screen rotation</string>
+    <string name="track_game">Track clicks/credits</string>
 
 </resources>

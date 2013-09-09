@@ -60,7 +60,7 @@ public class StringableAdapter implements SpinnerAdapter {
         }
     }
 
-    private View display(int i, View view) {
+    protected View display(int i, View view) {
         if (view == null || view.getId() != this.view) {
             view = View.inflate(context, this.view, null);
         }

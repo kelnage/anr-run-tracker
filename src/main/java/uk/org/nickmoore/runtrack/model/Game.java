@@ -27,9 +27,11 @@ public class Game extends Instantiable implements Serializable {
     public GameEnd gameEnd;
     public String notes;
     public int date;
+    @ForeignKey
+    public Match match;
 
     public Game() {
-        setId(-1);
+        setId(0);
         init();
     }
 
@@ -47,10 +49,10 @@ public class Game extends Instantiable implements Serializable {
         gameEnd = GameEnd.AGENDAS;
         notes = "";
         date = Math.round(new Date().getTime() / 1000f);
+        match = null;
     }
 
-    public Result getPlayerResult() throws UninstantiatedException {
-        throwIfNotInstantiated("getPlayerResult");
+    public Result getPlayerResult(GameEnd gameEnd) {
         if (gameEnd == GameEnd.AGENDAS && playerAgendaScore >= 7) {
             return Result.WIN;
         }
@@ -68,6 +70,10 @@ public class Game extends Instantiable implements Serializable {
             return Result.WIN;
         }
         return Result.LOSE;
+    }
+
+    public Result getPlayerResult() throws UninstantiatedException {
+        return getPlayerResult(gameEnd);
     }
 
     public int getEffectivePlayerScore() throws UninstantiatedException {
@@ -95,10 +101,10 @@ public class Game extends Instantiable implements Serializable {
         if (isInstantiated()) {
             return String.format("ID: %d, Player Identity: %s, Player Score: %d" +
                     "\nOpponent: %s, Opponent Identity: %s, Opponent Score: %d," +
-                    " Game End: %s, Notes: %s",
+                    " Game End: %s, Notes: %s\nMatch: %s",
                     getId(), playerIdentity.name(), playerAgendaScore,
                     opponent.toString(), opponentIdentity.name(),
-                    opponentAgendaScore, gameEnd.name(), notes);
+                    opponentAgendaScore, gameEnd.name(), notes, String.valueOf(match));
         }
         return String.format("ID: %d", getId());
     }

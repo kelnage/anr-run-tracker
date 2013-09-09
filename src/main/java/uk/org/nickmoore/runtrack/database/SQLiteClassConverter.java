@@ -2,6 +2,8 @@ package uk.org.nickmoore.runtrack.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,10 +24,17 @@ public class SQLiteClassConverter {
     public static class Join {
         final Class<? extends Instantiable> table;
         final String field;
+        String joinType = "JOIN";
 
         public Join(Class<? extends Instantiable> table, String field) {
             this.table = table;
             this.field = field;
+        }
+
+        public Join(Class<? extends Instantiable> table, String field, String joinType) {
+            this.table = table;
+            this.field = field;
+            this.joinType = joinType;
         }
     }
 
@@ -50,16 +59,19 @@ public class SQLiteClassConverter {
             this.clazz = clazz;
             this.name = name;
             if (name.equals("_id")) {
-                alias = aliasPrefix + "_" + clazz.getSimpleName() + "_id";
+                alias = (aliasPrefix.equals("") ? "" : aliasPrefix + "_") + clazz.getSimpleName()
+                        + "_id";
             } else {
-                alias = aliasPrefix + "_" + clazz.getSimpleName() + "_" + name;
+                alias = (aliasPrefix.equals("") ? "" : aliasPrefix + "_") + clazz.getSimpleName()
+                        + "_" + name;
             }
             parent = parentField;
         }
 
         @Override
         public String toString() {
-            return clazz.getSimpleName() + ":" + name + " (" + alias + ")";
+            return clazz.getSimpleName() + ":" + name + " (" + alias + ", child of " +
+                    (parent == null ? "this class" : parent.getName()) + ")";
         }
 
         public String getAlias() {
@@ -133,16 +145,6 @@ public class SQLiteClassConverter {
         return result;
     }
 
-    private String[] getFieldAlias(FieldName[] fieldNames) {
-        String[] result = new String[fieldNames.length];
-        int i = 0;
-        for (FieldName fieldName : fieldNames) {
-            result[i] = fieldName.getAlias();
-            i++;
-        }
-        return result;
-    }
-
     private Map<FieldName, FieldType> getDatabaseFields(Class<?> c, Field parent) {
         TreeMap<FieldName, FieldType> databaseFields = new TreeMap<FieldName, FieldType>();
         if (c.isEnum()) {
@@ -179,11 +181,8 @@ public class SQLiteClassConverter {
                     fieldType.equals(String.class)) {
                 databaseType = "TEXT";
             } else {
-                log("Examining class %s in field %s", field.getType().getSimpleName(),
-                        field.getName());
                 try {
                     if (fieldType.getField("_id").getType().getName().equals("long")) {
-                        log("Class %s is a foreign key", fieldType.getSimpleName());
                         databaseType = "INTEGER";
                     }
                 } catch (NoSuchFieldException ex) {
@@ -225,11 +224,13 @@ public class SQLiteClassConverter {
                 if (field.isAnnotationPresent(IndexedField.class)) {
                     IndexedField indexedField = field.getAnnotation(IndexedField.class);
                     if (indexedField.indexName().equals("")) {
-                        indexedFields.put(String.format("%s_%s", c.getSimpleName(), entry.getKey().name),
+                        indexedFields.put(
+                                String.format("%s_%s", c.getSimpleName(), entry.getKey().name),
                                 entry.getKey().name);
                     } else if (indexedFields.containsKey(indexedField.indexName())) {
-                        indexedFields.put(indexedField.indexName(), String.format("%s, %s",
-                                indexedFields.get(indexedField.indexName()), entry.getKey().name));
+                        indexedFields.put(indexedField.indexName(),
+                                String.format("%s, %s", indexedFields.get(indexedField.indexName()),
+                                        entry.getKey().name));
                     } else {
                         indexedFields.put(indexedField.indexName(), entry.getKey().name);
                     }
@@ -264,7 +265,7 @@ public class SQLiteClassConverter {
             Log.e(getClass().getSimpleName(), "Cannot instantiate " + clazz.getSimpleName()
                     + " due to " + ex.getMessage());
         } catch (InvocationTargetException ex) {
-            // TODO
+            Log.e(getClass().getSimpleName(), ex.toString());
         } catch (IllegalAccessException ex) {
             Log.e(getClass().getSimpleName(), "Nick forgot to make a member variable public in "
                     + clazz.getSimpleName());
@@ -290,15 +291,14 @@ public class SQLiteClassConverter {
                     } else {
                         log("Examining class %s in field %s",
                                 field.getType().getSimpleName(), field.getName());
-                        try {
-                            if (field.getType().getField("_id") != null) {
-                                log("Class %s is a foreign key", field.getType().getSimpleName());
-                                data.put(field.getName(),
-                                        field.getType().getField("_id")
-                                                .get(field.get(instance)).toString());
-                            }
-                        } catch (NoSuchFieldException ex) {
-                            // log("NoSuchFieldException %s", field.getName());
+                        Object fieldValue = field.get(instance);
+                        if(fieldValue == null) {
+                            data.putNull(field.getName());
+                        }
+                        else if (fieldValue instanceof Instantiable) {
+                            data.put(field.getName(), ((Instantiable) fieldValue).getId());
+                        }
+                        else {
                             data.put(field.getName(), field.get(instance).toString());
                         }
                     }
@@ -312,14 +312,15 @@ public class SQLiteClassConverter {
 
     public void store(Object object) throws UnmanageableClassException {
         if(object instanceof Enum<?>) {
-            long id = insert(object);
-            if(id == -1) {
+            try {
+                insert(object);
+            } catch(SQLiteConstraintException ex) {
                 update(object);
             }
         }
         else if(object instanceof Instantiable) {
             Instantiable instance = (Instantiable) object;
-            if(instance.getId() == -1) {
+            if(instance.getId() == 0) {
                 insert(instance);
             } else {
                 update(instance);
@@ -330,7 +331,10 @@ public class SQLiteClassConverter {
     public long insert(Object instance) throws UnmanageableClassException {
         Class clazz = instance.getClass();
         String table = clazz.getSimpleName();
-        long id = db.insert(table, null, insertValues(instance));
+        ContentValues values = insertValues(instance);
+        Log.v(getClass().getSimpleName(), String.format("Inserting new %s: %s", table,
+                values.toString()));
+        long id = db.insert(table, null, values);
         try {
             Field idField = clazz.getField("_id");
             if (idField != null) {
@@ -355,7 +359,10 @@ public class SQLiteClassConverter {
 
     public void update(Object instance) throws UnmanageableClassException {
         String table = instance.getClass().getSimpleName();
-        db.update(table, insertValues(instance), "_id=?", new String[]{getId(instance)});
+        ContentValues values = insertValues(instance);
+        Log.v(getClass().getSimpleName(), String.format("Updating %s %s: %s", table,
+                getId(instance), values.toString()));
+        db.update(table, values, "_id=?", new String[]{getId(instance)});
     }
 
     private String getId(Object instance) throws UnmanageableClassException {
@@ -390,7 +397,7 @@ public class SQLiteClassConverter {
                 }
             }
         }
-        T instance = instantiateNew(clazz, -1);
+        T instance = instantiateNew(clazz, 0);
         readCursor(instance, cursor, fields);
         return instance;
     }
@@ -400,10 +407,8 @@ public class SQLiteClassConverter {
                                                      Map<FieldName, FieldType> fields) {
         int i = 0;
         for (FieldName fieldName : fields.keySet()) {
-            Log.v(getClass().getSimpleName(), String.format("Checking %s against column %s",
-                    fieldName, cursor.getColumnName(i)));
             if (fieldName.parent == null) {
-                if (fieldName.name.equals("_id") && instance.getId() != -1) {
+                if (fieldName.name.equals("_id") && instance.getId() != 0) {
                     // we already have an ID field value
                     if (cursor.getLong(i) != instance.getId()) {
                         Log.w(getClass().getSimpleName(),
@@ -420,11 +425,18 @@ public class SQLiteClassConverter {
                 try {
                     value = (Instantiable) fieldName.parent.get(instance);
                 } catch (IllegalAccessException ex) {
-                    // TODO
+                    Log.w(getClass().getSimpleName(), "Cannot access " + fieldName.parent.getName());
                 }
                 if (value == null) {
+                    Log.v(getClass().getSimpleName(), "Instantiating new instance of " +
+                            fieldName.parent.getName());
                     value = instantiateNew(
-                            (Class<? extends Instantiable>) fieldName.parent.getType(), -1);
+                            (Class<? extends Instantiable>) fieldName.parent.getType(), 0);
+                    try {
+                        fieldName.parent.set(instance, value);
+                    } catch (IllegalAccessException ex) {
+                        Log.e(getClass().getSimpleName(), ex.toString());
+                    }
                 }
                 updateField(value, fieldName, fields.get(fieldName), cursor, i);
                 value.instantiate();
@@ -437,6 +449,10 @@ public class SQLiteClassConverter {
     @SuppressWarnings("unchecked")
     private void updateField(Instantiable instance, FieldName fieldName, FieldType fieldType,
                              Cursor cursor, int i) {
+        Log.v(getClass().getSimpleName(), String.format(
+                "Assigning %s in cursor field %s to the field %s (%s) in a %s", cursor.getString(i),
+                cursor.getColumnName(i), fieldName.name, fieldType.clazz.getSimpleName(),
+                instance.getClass().getSimpleName()));
         try {
             Field field = instance.getClass().getField(fieldName.name);
             if (fieldType.clazz.isEnum()) {
@@ -454,16 +470,19 @@ public class SQLiteClassConverter {
                 field.set(instance, cursor.getLong(i));
             } else if (fieldType.clazz.equals(String.class)) {
                 field.set(instance, cursor.getString(i));
-            } else if (fieldType.clazz.isAssignableFrom(Instantiable.class)) {
+            } else if (Instantiable.class.isAssignableFrom(fieldType.clazz)) {
                 Class<? extends Instantiable> fieldClass =
                         (Class<? extends Instantiable>) fieldType.clazz;
                 Instantiable value = instantiateNew(fieldClass, cursor.getLong(i));
                 field.set(instance, value);
+            } else {
+                Log.e(getClass().getSimpleName(), String.format("I don't know what to do with %s",
+                        fieldType.clazz.getSimpleName()));
             }
         } catch (IllegalAccessException ex) {
-            // TODO
+            Log.e(getClass().getSimpleName(), ex.toString());
         } catch (NoSuchFieldException ex) {
-            // TODO
+            Log.e(getClass().getSimpleName(), ex.toString());
         }
     }
 
@@ -477,24 +496,26 @@ public class SQLiteClassConverter {
         return db.query(clazz.getSimpleName(), fieldNames, null, null, null, null, orderBy, limit);
     }
 
-    public Cursor findAll(Class clazz, String orderBy, String limit,
-                          Join... joins) {
+    public Cursor findAll(Class clazz,  String selection, String[] selectionArgs, String orderBy,
+                          String limit, Join... joins) {
         Map<FieldName, FieldType> fields = getDatabaseFields(clazz, null);
         StringBuilder joinString = new StringBuilder(clazz.getSimpleName());
         for (Join join : joins) {
             try {
                 fields.putAll(getDatabaseFields(join.table, clazz.getField(join.field)));
-                joinString.append(String.format(" JOIN %1$s ON %2$s.%3$s = %1$s._id",
-                        join.table.getSimpleName(), clazz.getSimpleName(), join.field));
+                joinString.append(String.format(" %4$s %1$s ON %2$s.%3$s = %1$s._id",
+                        join.table.getSimpleName(), clazz.getSimpleName(), join.field,
+                        join.joinType));
             } catch (NoSuchFieldException ex) {
-                // TODO
+                Log.e(getClass().getSimpleName(), ex.toString());
             }
         }
         String[] fieldNames = getFieldSql(fields.keySet(), clazz);
         Log.i(getClass().getSimpleName(),
                 String.format("SQL: SELECT %s FROM %s ORDER BY %s LIMIT %s",
                         TextUtils.join(", ", fieldNames), joinString.toString(), orderBy, limit));
-        return db.query(joinString.toString(), fieldNames, null, null, null, null, orderBy, limit);
+        return db.query(joinString.toString(), fieldNames, selection, selectionArgs, null, null,
+                orderBy, limit);
     }
 
     public <T> int getCount(Class<T> clazz) {
@@ -514,7 +535,7 @@ public class SQLiteClassConverter {
             NoSuchInstanceException {
         Class clazz = instance.getClass();
         Map<FieldName, FieldType> fields = getDatabaseFields(clazz, null);
-        String[] fieldNames = getFieldAlias(fields.keySet().toArray(new FieldName[fields.size()]));
+        String[] fieldNames = getFieldNames(fields.keySet());
         String id = getId(instance);
         Cursor cursor = db.query(clazz.getSimpleName(), fieldNames, "_id=?",
                 new String[]{id}, null, null, null);

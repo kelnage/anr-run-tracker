@@ -8,87 +8,58 @@
     tools:context=".ui.MainActivity">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="128dp"
         android:id="@+id/logo"
         android:layout_gravity="center"
         android:contentDescription="@string/logo_descr"
         android:src="@drawable/android_netrunner_robot"
-        android:padding="5dp"
-        android:layout_weight="0.3" />
+        android:padding="5dp" />
 
-    <TableLayout
+    <Button
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/new_game"
+        android:id="@+id/new_game"
         android:layout_gravity="center"
-        android:layout_weight="0.7"
-        android:stretchColumns="*">
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:clickable="false"
-            android:baselineAligned="false"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="5dp">
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/new_match"
+        android:id="@+id/new_match"
+        android:layout_gravity="center"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp" />
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:text="@string/new_game"
-                android:id="@+id/new_game"
-                android:layout_gravity="center"
-                android:layout_weight="0.5"
-                android:layout_column="0"
-                android:layout_marginRight="5dp" />
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/history"
+        android:id="@+id/history"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
 
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:text="@string/history"
-                android:id="@+id/history"
-                android:layout_gravity="center"
-                android:layout_weight="0.5"
-                android:layout_column="1"
-                android:layout_marginLeft="5dp" />
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/statistics"
+        android:id="@+id/statistics"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="10dp">
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:text="@string/statistics"
-                android:id="@+id/statistics"
-                android:layout_gravity="center"
-                android:layout_weight="0.5"
-                android:layout_column="0"
-                android:layout_marginRight="5dp" />
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:text="@string/about"
-                android:id="@+id/about"
-                android:layout_gravity="center"
-                android:layout_weight="0.5"
-                android:layout_column="1"
-                android:layout_marginLeft="5dp" />
-
-        </TableRow>
-    </TableLayout>
-
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about"
+        android:id="@+id/about"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
 
 </LinearLayout>

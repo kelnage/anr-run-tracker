@@ -13,16 +13,16 @@
     <string name="lose">Loss</string>
     <string name="draw">Draw</string>
     <string name="player">Player</string>
-    <string name="opponent">Opponent</string>
-    <string name="playingAs">Playing As</string>
-    <string name="playerRole">Your Role</string>
+    <string name="opponent">Against</string>
+    <string name="playingAs">As</string>
+    <string name="playerRole">As</string>
     <string name="playerFact">Your Faction</string>
-    <string name="playerIdent">Your Identity</string>
-    <string name="playerAgendas">Your Agendas</string>
-    <string name="oppFact">Their Faction</string>
-    <string name="oppIdent">Their Identity</string>
-    <string name="oppAgendas">Their Agendas</string>
-    <string name="gameEnd">Game End</string>
+    <string name="playerIdent">Using</string>
+    <string name="playerAgendas">Scored</string>
+    <string name="oppFact">Against</string>
+    <string name="oppIdent">Versus</string>
+    <string name="oppAgendas">Missed</string>
+    <string name="gameEnd">Result</string>
     <string name="save">Save</string>
     <string name="notes">Notes</string>
     <string name="logo_descr">Netrunner Game Tracker Logo</string>
@@ -54,12 +54,13 @@
     <string name="played_as_menu">Played As:</string>
     <string name="against_menu">Against:</string>
     <string name="coming_soon">Coming soon!</string>
-    <string name="date">Date</string>
+    <string name="date">On</string>
     <string name="invalid_date">Invalid date!</string>
     <string name="delete_game_title">Delete Game Against %s?</string>
     <string name="delete_game">Are you sure you wish to delete the game against %s?</string>
     <string name="vs">vs</string>
     <string name="game_short_title">%1$s %2$s against %3$s</string>
+    <string name="match_short_title">%1$s against %2$s</string>
     <string name="a_bracket_b">%1$s (%2$d)</string>
     <string name="role_win_rate">Role Win Rate</string>
     <string name="runner_faction_win_rate">Runner Win Rate</string>
@@ -70,5 +71,7 @@
     <string name="up_arrow">Up arrow</string>
     <string name="click">Click</string>
     <string name="credit">Credit</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
 
 </resources>

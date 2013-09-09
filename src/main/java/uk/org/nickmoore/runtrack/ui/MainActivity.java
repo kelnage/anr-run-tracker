@@ -12,6 +12,7 @@ import uk.org.nickmoore.runtrack.R;
 import uk.org.nickmoore.runtrack.database.DatabaseManager;
 import uk.org.nickmoore.runtrack.database.SQLiteClassConverter;
 import uk.org.nickmoore.runtrack.model.Game;
+import uk.org.nickmoore.runtrack.model.Match;
 
 /**
  * The main startup activity.
@@ -19,6 +20,7 @@ import uk.org.nickmoore.runtrack.model.Game;
 public class MainActivity extends Activity implements View.OnClickListener {
     private SQLiteClassConverter converter;
     private Button newGame;
+    private Button newMatch;
     private Button statistics;
     private Button history;
     private Button about;
@@ -29,6 +31,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.main);
         newGame = (Button) findViewById(R.id.new_game);
         newGame.setOnClickListener(this);
+        newMatch = (Button) findViewById(R.id.new_match);
+        newMatch.setOnClickListener(this);
         statistics = (Button) findViewById(R.id.statistics);
         statistics.setOnClickListener(this);
         history = (Button) findViewById(R.id.history);
@@ -47,17 +51,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        Intent intent = new Intent();
         if (view.equals(newGame)) {
-            Intent intent = new Intent();
             intent.setClass(getApplicationContext(), GameActivity.class);
             intent.putExtra("game", new Game());
             startActivity(intent);
+        } else if(view.equals(newMatch)) {
+            intent.setClass(getApplicationContext(), GameActivity.class);
+            Match match = new Match();
+            match.firstGame = new Game();
+            match.secondGame = new Game();
+            match.setCurrentGame(match.firstGame);
+            intent.putExtra("match", match);
+            startActivity(intent);
         } else if (view.equals(history)) {
-            Intent intent = new Intent();
             intent.setClass(getApplicationContext(), GameHistoryActivity.class);
             startActivity(intent);
         } else if (view.equals(statistics)) {
-            Intent intent = new Intent();
             intent.setClass(getApplicationContext(), PlayerStatsActivity.class);
             startActivity(intent);
         } else if (view.equals(about)) {

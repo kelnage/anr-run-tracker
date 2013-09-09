@@ -13,7 +13,7 @@ import android.widget.CursorAdapter;
  */
 public class InstantiableCursorAdapter<T extends Instantiable> extends CursorAdapter {
     public static interface ViewRenderer<T> {
-        public void populateView(Context context, View view, T instance);
+        public void populateView(Context context, View view, T instance, Cursor cursor);
     }
 
     private final SQLiteClassConverter converter;
@@ -35,8 +35,8 @@ public class InstantiableCursorAdapter<T extends Instantiable> extends CursorAda
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         T instance = converter.readCursor(clazz, cursor);
-        Log.d(getClass().getSimpleName(), instance.toString());
-        viewRenderer.populateView(context, view, instance);
+        // Log.d(getClass().getSimpleName(), instance.toString());
+        viewRenderer.populateView(context, view, instance, cursor);
     }
 
     @Override

@@ -13,29 +13,41 @@ import uk.org.nickmoore.runtrack.database.UninstantiatedException;
  */
 @SuppressWarnings("WeakerAccess")
 public class Match extends Instantiable implements Serializable {
+    @ForeignKey
     public Opponent opponent;
     @ForeignKey(aliasPrefix = "First")
     public Game firstGame;
     @ForeignKey(aliasPrefix = "Second")
     public Game secondGame;
+    private Game currentGame;
 
     public Match() {
-        setId(-1);
+        setId(0);
+        init();
     }
 
     public Match(long id) {
         setId(id);
+        init();
     }
 
-    public Result getResult() throws UninstantiatedException {
+    private void init() {
+        opponent = new Opponent();
+        firstGame = new Game();
+        secondGame = new Game();
+    }
+
+    public Result getPlayerResult() throws UninstantiatedException {
         throwIfNotInstantiated("getPlayerResult");
         firstGame.throwIfNotInstantiated("getPlayerResult");
         secondGame.throwIfNotInstantiated("getPlayerResult");
         if (firstGame.getPlayerResult().equals(secondGame.getPlayerResult())) {
             return firstGame.getPlayerResult();
         }
-        int playerScore = firstGame.getEffectivePlayerScore() + secondGame.getEffectivePlayerScore();
-        int opponentScore = firstGame.getEffectiveOpponentScore() + secondGame.getEffectiveOpponentScore();
+        int playerScore = firstGame.getEffectivePlayerScore() +
+                secondGame.getEffectivePlayerScore();
+        int opponentScore = firstGame.getEffectiveOpponentScore() +
+                secondGame.getEffectiveOpponentScore();
         if (playerScore > opponentScore) {
             return Result.WIN;
         } else if (playerScore < opponentScore) {
@@ -47,8 +59,8 @@ public class Match extends Instantiable implements Serializable {
     @Override
     public String toString() {
         if (isInstantiated()) {
-            return String.format("ID: %d, Opponent: %d, First Game: %d, Second Game: %d",
-                    getId(), opponent.getId(), firstGame.getId(), secondGame.getId());
+            return String.format("ID: %d, Opponent: %s, First Game: %s, Second Game: %s",
+                    getId(), opponent.toString(), firstGame.toString(), secondGame.toString());
         }
         return String.format("ID: %d", getId());
     }
@@ -59,5 +71,16 @@ public class Match extends Instantiable implements Serializable {
             return "";
         }
         return String.format("%d", getId());
+    }
+
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public void setCurrentGame(Game currentGame) {
+        if(currentGame != firstGame && currentGame != secondGame) {
+            throw new IllegalArgumentException("currentGame must be either the first or second game");
+        }
+        this.currentGame = currentGame;
     }
 }

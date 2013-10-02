@@ -39,11 +39,17 @@ public enum Identity implements Stringable {
     REINA_ROJA(R.string.reina_roja, R.string.reina_roja_short, Faction.ANARCH),
     THE_COLLECTIVE(R.string.the_collective, R.string.the_collective_short, Faction.SHAPER),
     LARAMY_FISK(R.string.laramy_fisk, R.string.laramy_fisk_short, Faction.CRIMINAL),
-    GRNDL(R.string.grndl, R.string.grndl, Faction.WEYLAND);
+    GRNDL(R.string.grndl, Faction.WEYLAND);
 
     public final int textId;
     public final int shortTextId;
     public final Faction faction;
+
+    private Identity(int textId, Faction faction) {
+        this.textId = textId;
+        this.shortTextId = textId;
+        this.faction = faction;
+    }
 
     private Identity(int textId, int shortTextId, Faction faction) {
         this.textId = textId;

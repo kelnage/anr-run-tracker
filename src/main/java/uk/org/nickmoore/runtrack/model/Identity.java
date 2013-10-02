@@ -38,7 +38,8 @@ public enum Identity implements Stringable {
     CUSTOM_BIOTICS(R.string.custom_biotics, R.string.custom_biotics_short, Faction.HAAS_BIOROID),
     REINA_ROJA(R.string.reina_roja, R.string.reina_roja_short, Faction.ANARCH),
     THE_COLLECTIVE(R.string.the_collective, R.string.the_collective_short, Faction.SHAPER),
-    LARAMY_FISK(R.string.laramy_fisk, R.string.laramy_fisk_short, Faction.CRIMINAL);
+    LARAMY_FISK(R.string.laramy_fisk, R.string.laramy_fisk_short, Faction.CRIMINAL),
+    GRNDL(R.string.grndl, R.string.grndl, Faction.WEYLAND);
 
     public final int textId;
     public final int shortTextId;
@@ -75,7 +76,7 @@ public enum Identity implements Stringable {
             case NBN:
                 return new Identity[]{MAKING_NEWS, THE_WORLD_IS_YOURS};
             case WEYLAND:
-                return new Identity[]{BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT};
+                return new Identity[]{BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT, GRNDL};
         }
         return Identity.values();
     }
@@ -90,7 +91,7 @@ public enum Identity implements Stringable {
                 return new Identity[]{ENGINEERING_THE_FUTURE, STRONGER_TOGETHER, NEXT_DESIGN,
                         CUSTOM_BIOTICS, CEREBRAL_IMAGING, PERSONAL_EVOLUTION,
                         REPLICATING_PERFECTION, MAKING_NEWS, THE_WORLD_IS_YOURS,
-                        BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT};
+                        BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT, GRNDL};
         }
         return Identity.values();
     }

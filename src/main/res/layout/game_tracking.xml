@@ -5,82 +5,92 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context=".ui.GameTrackingActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp">
     <LinearLayout
         android:layout_height="0dp"
         android:layout_width="match_parent"
         android:layout_weight="0.5"
         android:orientation="vertical">
 
-
         <view
             class="uk.org.nickmoore.runtrack.ui.InvertibleTextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/corporation"
-            android:id="@+id/corp_label"
+            android:text="@string/runner"
+            android:id="@+id/top_label"
             runtrack:inverted="true"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp" />
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:baselineAligned="false"
             android:gravity="center_vertical"
-            android:layout_weight="0.9">
+            android:layout_weight="0.9"
+            android:background="@drawable/active_runner_background"
+            android:id="@+id/top_area">
 
-            <LinearLayout
+            <view
+                class="uk.org.nickmoore.runtrack.ui.RotatableImageView"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center_horizontal">
+                android:layout_height="fill_parent"
+                android:id="@+id/corp_click_image"
+                android:src="@drawable/click"
+                android:cropToPadding="false"
+                android:contentDescription="@string/click"
+                runtrack:imageRotation="180"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
 
-                <view
-                    class="uk.org.nickmoore.runtrack.ui.CounterView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/corp_click_counter"
-                    runtrack:inverted="true" />
-
-                <view
-                    class="uk.org.nickmoore.runtrack.ui.RotatableImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/corp_click_image"
-                    android:src="@drawable/click"
-                    android:cropToPadding="false"
-                    android:contentDescription="@string/click"
-                    runtrack:imageRotation="180" />
-            </LinearLayout>
-
-            <LinearLayout
+            <view
+                class="uk.org.nickmoore.runtrack.ui.CounterView"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center_horizontal">
+                android:layout_height="fill_parent"
+                android:id="@+id/top_click_counter"
+                runtrack:inverted="true"
+                android:layout_weight="1" />
 
-                <view
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    class="uk.org.nickmoore.runtrack.ui.CounterView"
-                    android:id="@+id/corp_credit_counter"
-                    runtrack:allowNegative="false"
-                    runtrack:inverted="true" />
+            <view
+                class="uk.org.nickmoore.runtrack.ui.RotatableImageView"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/corp_credit_image"
+                android:src="@drawable/credit"
+                android:cropToPadding="false"
+                android:contentDescription="@string/credit"
+                runtrack:imageRotation="180"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
 
-                <view
-                    class="uk.org.nickmoore.runtrack.ui.RotatableImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/corp_credit_image"
-                    android:src="@drawable/credit"
-                    android:cropToPadding="false"
-                    android:contentDescription="@string/credit"
-                    runtrack:imageRotation="180" />
-            </LinearLayout>
+            <view
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                class="uk.org.nickmoore.runtrack.ui.CounterView"
+                android:id="@+id/top_credit_counter"
+                runtrack:allowNegative="false"
+                runtrack:inverted="true"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_gravity="center" />
         </LinearLayout>
 
     </LinearLayout>
+
+    <view
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/turn_n"
+        class="uk.org.nickmoore.runtrack.ui.InvertibleTextView"
+        android:id="@+id/turn_label"
+        android:gravity="center_horizontal"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp" />
 
     <LinearLayout
         android:layout_height="0dp"
@@ -93,53 +103,63 @@
             android:layout_height="0dp"
             android:layout_weight="0.9"
             android:baselineAligned="false"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:background="@drawable/active_corporation_background"
+            android:id="@+id/bottom_area">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center_horizontal" >
+                android:gravity="center_horizontal"
+                android:baselineAligned="false"
+                android:layout_weight="1">
 
                 <view
                     class="uk.org.nickmoore.runtrack.ui.CounterView"
                     runtrack:inverted="false"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/runner_credit_counter"
-                    android:orientation="vertical" />
+                    android:id="@+id/bottom_credit_counter"
+                    android:orientation="vertical"
+                    android:layout_weight="1" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
                     android:id="@+id/runner_credit_image"
                     android:src="@drawable/credit"
                     android:cropToPadding="false"
-                    android:contentDescription="@string/click" />
+                    android:contentDescription="@string/click"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center_horizontal" >
+                android:gravity="center_horizontal"
+                android:layout_weight="1">
 
                 <view
                     class="uk.org.nickmoore.runtrack.ui.CounterView"
                     runtrack:allowNegative="false"
                     runtrack:inverted="false"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/runner_click_counter"
-                    android:orientation="vertical" />
+                    android:id="@+id/bottom_click_counter"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
                     android:id="@+id/runner_click_image"
                     android:src="@drawable/click"
                     android:cropToPadding="false"
-                    android:contentDescription="@string/click" />
+                    android:contentDescription="@string/click"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
             </LinearLayout>
         </LinearLayout>
 
@@ -149,9 +169,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/runner"
-            android:id="@+id/runner_label"
-            android:gravity="center_horizontal" />
+            android:text="@string/corporation"
+            android:id="@+id/bottom_label"
+            android:gravity="center_horizontal"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp" />
     </LinearLayout>
 </LinearLayout>
 

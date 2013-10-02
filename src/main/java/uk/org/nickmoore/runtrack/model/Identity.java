@@ -95,4 +95,8 @@ public enum Identity implements Stringable {
         return Identity.values();
     }
 
+    public Role getRole() {
+        return faction.getRole();
+    }
+
 }

@@ -63,10 +63,10 @@ public class Game extends Instantiable implements Serializable {
                 return Result.DRAW;
             }
         }
-        if (playerIdentity.faction.role == Role.CORPORATION && gameEnd == GameEnd.FLATLINE) {
+        if (playerIdentity.getRole() == Role.CORPORATION && gameEnd == GameEnd.FLATLINE) {
             return Result.WIN;
         }
-        if (playerIdentity.faction.role == Role.RUNNER && gameEnd == GameEnd.DECKOUT) {
+        if (playerIdentity.getRole() == Role.RUNNER && gameEnd == GameEnd.DECKOUT) {
             return Result.WIN;
         }
         return Result.LOSE;

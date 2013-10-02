@@ -160,7 +160,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
     private void loadGame() {
         disableUpdates = true;
         opponent.setText(game.opponent.name);
-        playerRole.setChecked(game.playerIdentity.faction.getRole().equals(Role.CORPORATION));
+        playerRole.setChecked(game.playerIdentity.getRole().equals(Role.CORPORATION));
         updateIdentities(playerRole.isChecked());
         playerIdentity.setSelection(((StringableAdapter) playerIdentity.getAdapter())
                 .getPositionForItem(game.playerIdentity), false);
@@ -302,7 +302,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                     match.secondGame.opponent = match.opponent;
                     match.secondGame.date = match.firstGame.date;
                     if(match.secondGame.getId() == 0) {
-                        if(match.firstGame.playerIdentity.faction.getRole() == Role.CORPORATION) {
+                        if(match.firstGame.playerIdentity.getRole() == Role.CORPORATION) {
                             match.secondGame.playerIdentity =
                                     Identity.getIdentities(Role.RUNNER)[0];
                         }

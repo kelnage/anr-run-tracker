@@ -8,11 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -207,6 +210,7 @@ public class SQLiteClassConverter {
         sql.append(String.format("CREATE TABLE %s%s (", tablePrefix, c.getSimpleName()));
         Map<FieldName, FieldType> fields = getDatabaseFields(c, null);
         Map<String, String> indexedFields = new HashMap<String, String>();
+        List<String> primaryKeys = new ArrayList<String>();
         boolean first = true;
         for (Map.Entry<FieldName, FieldType> entry : fields.entrySet()) {
             if (!first) {
@@ -220,6 +224,9 @@ public class SQLiteClassConverter {
                 Field field = c.getField(entry.getKey().name);
                 if (field.isAnnotationPresent(AutoIncrement.class)) {
                     sql.append(" AUTOINCREMENT");
+                }
+                if (field.isAnnotationPresent(PrimaryKey.class)) {
+                    primaryKeys.add(entry.getKey().name);
                 }
                 if (field.isAnnotationPresent(IndexedField.class)) {
                     IndexedField indexedField = field.getAnnotation(IndexedField.class);
@@ -239,6 +246,18 @@ public class SQLiteClassConverter {
                 // ignore
             }
             first = false;
+        }
+        if(primaryKeys.size() > 0) {
+            boolean firstKey = true;
+            sql.append(", PRIMARY KEY(");
+            for(String key: primaryKeys) {
+                if(!firstKey) {
+                    sql.append(",");
+                }
+                sql.append(key);
+                firstKey = false;
+            }
+            sql.append(")");
         }
         sql.append(")");
         log(sql.toString());
@@ -529,6 +548,27 @@ public class SQLiteClassConverter {
         int result = cursor.getInt(0);
         cursor.close();
         return result;
+    }
+
+    public void retrieve(Object instance) throws UnmanageableClassException,
+            NoSuchInstanceException {
+        Class clazz = instance.getClass();
+        Map<FieldName, FieldType> fields = getDatabaseFields(clazz, null);
+        String[] fieldNames = getFieldNames(fields.keySet());
+        Map<String, String> primaryKeys = new HashMap<String, String>();
+        for(Map.Entry<FieldName, FieldType> entry: fields.entrySet()) {
+            try {
+                Field field = clazz.getField(entry.getKey().name);
+                if(field.isAnnotationPresent(PrimaryKey.class)) {
+                    primaryKeys.put(entry.getKey().name, String.valueOf(field.get(instance)));
+                }
+            } catch (NoSuchFieldException ex) {
+                Log.e(getClass().getSimpleName(), ex.toString());
+            } catch(IllegalAccessException ex) {
+                Log.e(getClass().getSimpleName(), ex.toString());
+            }
+        }
+        // TODO create
     }
 
     public void retrieve(Instantiable instance) throws UnmanageableClassException,

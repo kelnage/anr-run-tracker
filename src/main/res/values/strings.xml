@@ -76,5 +76,6 @@
     <string name="keep_alive">Keep screen alive</string>
     <string name="disable_rotation">Disable screen rotation</string>
     <string name="track_game">Track clicks/credits</string>
+    <string name="turn_n">Turn %d</string>
 
 </resources>

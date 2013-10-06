@@ -3,9 +3,9 @@
 
 Copyright (C) 2013 Nick Moore
 
-This file is part of RunTrack
+This file is part of ANR Run Tracker
 
-RunTrack is free software: you can redistribute it and/or modify
+ANR Run Tracker is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
 
-    <string name="app_name">Run Tracker</string>
+    <string name="app_name">ANR Run Tracker</string>
     <string name="action_settings">Settings</string>
     <string name="corporation">Corporation</string>
     <string name="runner">Runner</string>
@@ -45,14 +45,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="gameEnd">Result</string>
     <string name="save">Save</string>
     <string name="notes">Notes</string>
-    <string name="logo_descr">Netrunner Game Tracker Logo</string>
+    <string name="logo_descr">ANR Run Tracker Logo</string>
     <string name="new_game">New Game</string>
     <string name="new_match">New Match</string>
     <string name="statistics">Statistics</string>
     <string name="game_title">Game</string>
     <string name="history">Recent History</string>
     <string name="about">About</string>
-    <string name="about_text">Netrunner Game Tracker tracks your games of Android: Netrunner and
+    <string name="about_text">ANR Run Tracker tracks your games of Android: Netrunner and
         provides statistics based on your performance with and against different factions,
         identities and opponents.\n\nAndroid: Netrunner and other associated trademarks of Fantasy
         Flight Games are used without permission.\n\nThe Android robot is reproduced or modified

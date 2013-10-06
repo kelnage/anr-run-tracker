@@ -1,9 +1,9 @@
 /*
  *  Copyright (C) 2013 Nick Moore
  *
- *  This file is part of RunTrack
+ *  This file is part of ANR Run Tracker
  *
- *  RunTrack is free software: you can redistribute it and/or modify
+ *  ANR Run Tracker is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.

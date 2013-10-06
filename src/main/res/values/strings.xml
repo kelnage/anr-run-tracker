@@ -92,6 +92,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="swap">Swap</string>
     <string name="swap_scores">Swap agenda scores?</string>
     <string name="swap_scores_long">Should the agenda scores be swapped?</string>
+    <string name="dont_swap">Don\'t Swap</string>
     <string name="delete_second_game_title">Delete second game?</string>
     <string name="delete_second_game">Do you wish to convert this match into a single game?</string>
     <string name="provide_name">You must provide a name for your opponent</string>

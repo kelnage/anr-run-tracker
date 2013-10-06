@@ -239,7 +239,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                             opponentAgenda.setProgress(swap);
                         }
                     })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.dont_swap, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
@@ -259,11 +259,13 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
             game.opponentIdentity = (Identity) opponentIdentity.getItemAtPosition(i);
         } else if (adapterView.equals(gameEnd)) {
             game.gameEnd = (GameEnd) gameEnd.getItemAtPosition(i);
-            if(game.gameEnd == GameEnd.TIMEOUT && game == match.firstGame) {
-                save.setText(R.string.save);
-            }
-            else if(game == match.firstGame) {
-                save.setText(R.string.next);
+            if(match != null) {
+                if(game.gameEnd == GameEnd.TIMEOUT && game == match.firstGame) {
+                    save.setText(R.string.save);
+                }
+                else if(game == match.firstGame) {
+                    save.setText(R.string.next);
+                }
             }
         }
     }
@@ -353,50 +355,54 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                                 //
                             }
                         }
-                        AlertDialog dialog = new AlertDialog.Builder(this)
-                                .setTitle(R.string.delete_second_game_title)
-                                .setMessage(R.string.delete_second_game)
-                                .setPositiveButton(R.string.delete,
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int i) {
-                                                try {
-                                                    converter.delete(match.secondGame);
-                                                    converter.delete(match);
-                                                    game.match = null;
-                                                    converter.store(game);
-                                                    finish();
-                                                } catch (UnmanageableClassException ex) {
-                                                    //
-                                                }
-                                            }
-                                        })
-                                .setNegativeButton(R.string.cancel,
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int i) {
-                                                dialog.dismiss();
-                                                return;
-                                            }
-                                        })
-                                .show();
-                    }
-                    match.opponent = match.firstGame.opponent;
-                    match.secondGame.opponent = match.opponent;
-                    match.secondGame.date = match.firstGame.date;
-                    if(match.secondGame.getId() == 0) {
-                        if(match.firstGame.playerIdentity.faction.getRole() == Role.CORPORATION) {
-                            match.secondGame.playerIdentity =
-                                    Identity.getIdentities(Role.RUNNER)[0];
-                        }
                         else {
-                            match.secondGame.playerIdentity =
-                                    Identity.getIdentities(Role.CORPORATION)[0];
+                            new AlertDialog.Builder(this)
+                                    .setTitle(R.string.delete_second_game_title)
+                                    .setMessage(R.string.delete_second_game)
+                                    .setPositiveButton(R.string.delete,
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int i) {
+                                                    try {
+                                                        converter.delete(match.secondGame);
+                                                        converter.delete(match);
+                                                        game.match = null;
+                                                        converter.store(game);
+                                                        finish();
+                                                    } catch (UnmanageableClassException ex) {
+                                                        //
+                                                    }
+                                                }
+                                            })
+                                    .setNegativeButton(R.string.cancel,
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int i) {
+                                                    dialog.dismiss();
+                                                }
+                                            })
+                                    .show();
+                            return;
                         }
                     }
-                    game = match.secondGame;
-                    match.setCurrentGame(match.secondGame);
-                    loadGame();
+                    else {
+                        match.opponent = match.firstGame.opponent;
+                        match.secondGame.opponent = match.opponent;
+                        match.secondGame.date = match.firstGame.date;
+                        if(match.secondGame.getId() == 0) {
+                            if(match.firstGame.playerIdentity.faction.getRole() == Role.CORPORATION) {
+                                match.secondGame.playerIdentity =
+                                        Identity.getIdentities(Role.RUNNER)[0];
+                            }
+                            else {
+                                match.secondGame.playerIdentity =
+                                        Identity.getIdentities(Role.CORPORATION)[0];
+                            }
+                        }
+                        game = match.secondGame;
+                        match.setCurrentGame(match.secondGame);
+                        loadGame();
+                    }
                 }
                 else if(match.secondGame == game) {
                     try {

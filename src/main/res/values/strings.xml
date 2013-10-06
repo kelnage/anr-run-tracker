@@ -69,5 +69,11 @@
     <string name="overall_win_rate">Overall Win Rate</string>
     <string name="next">Next</string>
     <string name="back">Back</string>
+    <string name="swap">Swap</string>
+    <string name="swap_scores">Swap agenda scores?</string>
+    <string name="swap_scores_long">Should the agenda scores be swapped?</string>
+    <string name="delete_second_game_title">Delete second game?</string>
+    <string name="delete_second_game">Do you wish to convert this match into a single game?</string>
+    <string name="provide_name">You must provide a name for your opponent</string>
 
 </resources>

@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import uk.org.nickmoore.runtrack.R;
 import uk.org.nickmoore.runtrack.database.DatabaseManager;
@@ -136,7 +137,8 @@ public class OpponentActivity extends ListActivity implements DialogInterface.On
                 case DialogInterface.BUTTON_POSITIVE:
                     Editable nameValue = nameInput.getText();
                     if (nameValue == null || nameValue.toString() == null) {
-                        // TODO: no name has been specified - show an error message
+                        Toast.makeText(getApplication(), R.string.provide_name, Toast.LENGTH_LONG)
+                                .show();
                         return;
                     }
                     opponent.name = nameValue.toString();
@@ -145,7 +147,7 @@ public class OpponentActivity extends ListActivity implements DialogInterface.On
                         opponents.requery();
                         adapter.notifyDataSetChanged();
                     } catch (UnmanageableClassException ex) {
-                        // TODO
+                        // TODO handle exception
                         Log.e(getClass().getSimpleName(), "Could not store the instance");
                         ex.printStackTrace();
                     }

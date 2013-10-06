@@ -1,5 +1,6 @@
 package uk.org.nickmoore.runtrack.ui;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -139,9 +140,9 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                 try {
                     converter.retrieve(game);
                 } catch (UnmanageableClassException ex) {
-                    // TODO
+                    // TODO handle exception
                 } catch (NoSuchInstanceException ex) {
-                    // TODO
+                    // TODO handle exception
                 }
             }
         } else {
@@ -206,6 +207,27 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
             opponentIdentity.setSelection(playerPos, false);
             game.playerIdentity = (Identity) playerIdentity.getSelectedItem();
             game.opponentIdentity = (Identity) opponentIdentity.getSelectedItem();
+            if(game.playerAgendaScore != 0 || game.opponentAgendaScore != 0) {
+                new AlertDialog.Builder(this)
+                    .setTitle(R.string.swap_scores)
+                    .setMessage(R.string.swap_scores_long)
+                    .setCancelable(true)
+                    .setPositiveButton(R.string.swap, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            int swap = game.playerAgendaScore;
+                            playerAgenda.setProgress(game.opponentAgendaScore);
+                            opponentAgenda.setProgress(swap);
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .show();
+            }
         }
     }
 
@@ -218,6 +240,12 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
             game.opponentIdentity = (Identity) opponentIdentity.getItemAtPosition(i);
         } else if (adapterView.equals(gameEnd)) {
             game.gameEnd = (GameEnd) gameEnd.getItemAtPosition(i);
+            if(game.gameEnd == GameEnd.TIMEOUT && game == match.firstGame) {
+                save.setText(R.string.save);
+            }
+            else if(game == match.firstGame) {
+                save.setText(R.string.next);
+            }
         }
     }
 
@@ -245,7 +273,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
             game.opponentAgendaScore = opponentAgenda.getProgress();
             opponentAgendaView.setText(Integer.toString(game.opponentAgendaScore));
         }
-        // will notify DataSetObservers - TODO: can this be improved?
+        // will notify DataSetObservers - TODO: can this be done better?
         ((StringableAdapter) gameEnd.getAdapter()).setItems(GameEnd.values());
     }
 
@@ -276,7 +304,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (disableUpdates) return;
         updateIdentities(b);
-        // will notify DataSetObservers - TODO: can this be improved?
+        // will notify DataSetObservers - TODO: can this be done better?
         ((StringableAdapter) gameEnd.getAdapter()).setItems(GameEnd.values());
     }
 
@@ -296,6 +324,44 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
             }
             else {
                 if(match.firstGame == game) {
+                    if(game.gameEnd == GameEnd.TIMEOUT) {
+                        if(match.getId() == 0) {
+                            game.match = null;
+                            try {
+                                converter.store(game);
+                                finish();
+                            } catch (UnmanageableClassException ex) {
+                                //
+                            }
+                        }
+                        AlertDialog dialog = new AlertDialog.Builder(this)
+                                .setTitle(R.string.delete_second_game_title)
+                                .setMessage(R.string.delete_second_game)
+                                .setPositiveButton(R.string.delete,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int i) {
+                                                try {
+                                                    converter.delete(match.secondGame);
+                                                    converter.delete(match);
+                                                    game.match = null;
+                                                    converter.store(game);
+                                                    finish();
+                                                } catch (UnmanageableClassException ex) {
+                                                    //
+                                                }
+                                            }
+                                        })
+                                .setNegativeButton(R.string.cancel,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int i) {
+                                                dialog.dismiss();
+                                                return;
+                                            }
+                                        })
+                                .show();
+                    }
                     match.opponent = match.firstGame.opponent;
                     match.secondGame.opponent = match.opponent;
                     match.secondGame.date = match.firstGame.date;

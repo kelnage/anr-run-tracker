@@ -96,5 +96,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="delete_second_game_title">Delete second game?</string>
     <string name="delete_second_game">Do you wish to convert this match into a single game?</string>
     <string name="provide_name">You must provide a name for your opponent</string>
+    <string name="game_activity_label">%s Netrunner Game</string>
+    <string name="match_activity_label">%1$s Netrunner Match - Game %2$d</string>
+    <string name="opponent_activity_label">Choose Your Opponent</string>
+    <string name="game_history_activity_label">Recent Run History</string>
+    <string name="player_stats_activity_label">Run Stats</string>
 
 </resources>

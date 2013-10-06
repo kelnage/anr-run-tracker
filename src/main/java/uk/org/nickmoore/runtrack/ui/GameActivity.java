@@ -176,6 +176,15 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
     }
 
     private void loadGame() {
+        if(match == null) {
+            setTitle(String.format(getString(R.string.game_activity_label),
+                    game.getId() == 0 ? "Create" : "Edit"));
+        }
+        else {
+            setTitle(String.format(getString(R.string.match_activity_label),
+                    game.getId() == 0 ? "Create" : "Edit",
+                    game == match.firstGame ? 1 : 2));
+        }
         disableUpdates = true;
         opponent.setText(game.opponent.name);
         playerRole.setChecked(game.playerIdentity.faction.getRole().equals(Role.CORPORATION));

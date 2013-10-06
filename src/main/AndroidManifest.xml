@@ -42,9 +42,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </intent-filter>
         </activity>
         <activity android:name=".ui.GameActivity" />
-        <activity android:name=".ui.OpponentActivity" />
-        <activity android:name=".ui.GameHistoryActivity" />
-        <activity android:name=".ui.PlayerStatsActivity" />
+        <activity android:name=".ui.OpponentActivity"
+            android:label="@string/opponent_activity_label" />
+        <activity android:name=".ui.GameHistoryActivity"
+            android:label="@string/game_history_activity_label" />
+        <activity android:name=".ui.PlayerStatsActivity"
+            android:label="@string/player_stats_activity_label" />
     </application>
 
 </manifest>

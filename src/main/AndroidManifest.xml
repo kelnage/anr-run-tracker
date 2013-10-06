@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uk.org.nickmoore.runtrack"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.1">
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -32,8 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         android:allowBackup="true"
         android:icon="@drawable/ic_android_netrunner_robot"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:debuggable="true">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name">

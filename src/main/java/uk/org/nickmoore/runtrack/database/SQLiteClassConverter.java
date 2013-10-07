@@ -21,7 +21,7 @@ package uk.org.nickmoore.runtrack.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
@@ -333,7 +333,8 @@ public class SQLiteClassConverter {
         if(object instanceof Enum<?>) {
             try {
                 insert(object);
-            } catch(SQLiteConstraintException ex) {
+            } catch(SQLException ex) {
+                // assume the failure is due to a constraint and update the row instead
                 update(object);
             }
         }
@@ -347,21 +348,22 @@ public class SQLiteClassConverter {
         }
     }
 
-    public long insert(Object instance) throws UnmanageableClassException {
+    public long insert(Object instance) throws UnmanageableClassException, SQLException {
         Class clazz = instance.getClass();
         String table = clazz.getSimpleName();
         ContentValues values = insertValues(instance);
         Log.v(getClass().getSimpleName(), String.format("Inserting new %s: %s", table,
                 values.toString()));
-        long id = db.insert(table, null, values);
+        long id = db.insertOrThrow(table, null, values);
         try {
             Field idField = clazz.getField("_id");
-            if (idField != null) {
+            if (id != -1 && idField != null) {
                 idField.set(instance, id);
                 if (instance instanceof Instantiable) {
                     ((Instantiable) instance).instantiate();
                 }
             }
+            return id;
         } catch (NoSuchFieldException ex) {
             // id must exist on non-Enum classes
             if (!clazz.isEnum()) {

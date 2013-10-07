@@ -200,10 +200,18 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete:
-                deleteDialog.setTitle(String.format(getString(R.string.delete_game_title),
-                        game.opponent.name));
-                deleteDialog.setMessage(String.format(getString(R.string.delete_game),
-                        game.opponent.name));
+                if(game.match != null && game.match.getId() != 0) {
+                    deleteDialog.setTitle(String.format(getString(R.string.delete_match_title),
+                            game.opponent.name));
+                    deleteDialog.setMessage(String.format(getString(R.string.delete_match),
+                            game.opponent.name));
+                }
+                else {
+                    deleteDialog.setTitle(String.format(getString(R.string.delete_game_title),
+                            game.opponent.name));
+                    deleteDialog.setMessage(String.format(getString(R.string.delete_game),
+                            game.opponent.name));
+                }
                 deleteDialog.show();
                 return true;
         }
@@ -217,6 +225,10 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
             switch (whichButton) {
                 case DialogInterface.BUTTON_POSITIVE:
                     try {
+                        if(game.match != null && game.match.getId() != 0) {
+                            converter.delete(game.match.secondGame);
+                            converter.delete(game.match);
+                        }
                         converter.delete(game);
                         recentGames.requery();
                         adapter.notifyDataSetChanged();

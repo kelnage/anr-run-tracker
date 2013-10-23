@@ -86,7 +86,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             converter.createTable(Game.class, "temporary_");
             int startCount = converter.getCount(Game.class);
             String fields = "_id, playerIdentity, playerAgendaScore, opponent, opponentIdentity, " +
-                    "opponentAgendaScore, gameEnd, notes, date";
+                    "opponentAgendaScore, gameEnd, notes";
             String copySql = String.format("INSERT INTO temporary_%1$s(%2$s) SELECT %2$s FROM %1$s",
                     Game.class.getSimpleName(), fields);
             Log.i(getClass().getSimpleName(), copySql);
@@ -123,7 +123,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 }
             }
         }
-        if (newVersion >= 6 && oldVersion < 6) {
+        if (newVersion >= 6 && oldVersion < 6 && oldVersion > 2) {
             String sql = String.format("ALTER TABLE %s ADD COLUMN match INTEGER DEFAULT NULL",
                     Game.class.getSimpleName());
             Log.i(getClass().getSimpleName(), sql);

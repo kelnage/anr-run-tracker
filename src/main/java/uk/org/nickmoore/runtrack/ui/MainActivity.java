@@ -24,6 +24,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -42,7 +44,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button newMatch;
     private Button statistics;
     private Button history;
-    private Button about;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +57,39 @@ public class MainActivity extends Activity implements View.OnClickListener {
         statistics.setOnClickListener(this);
         history = (Button) findViewById(R.id.history);
         history.setOnClickListener(this);
-        about = (Button) findViewById(R.id.about);
-        about.setOnClickListener(this);
         converter = new SQLiteClassConverter(
                 new DatabaseManager(getApplicationContext()).getWritableDatabase());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.about:
+                new AlertDialog.Builder(this)
+                        .setMessage(R.string.about_text)
+                        .setPositiveButton(R.string.close,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int whichButton) {
+                                        dialogInterface.dismiss();
+                                    }
+                                }
+                        )
+                        .show();
+                return true;
+            case R.id.backup_restore:
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), BackupActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -89,18 +119,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         } else if (view.equals(statistics)) {
             intent.setClass(getApplicationContext(), PlayerStatsActivity.class);
             startActivity(intent);
-        } else if (view.equals(about)) {
-            new AlertDialog.Builder(this)
-                    .setMessage(R.string.about_text)
-                    .setPositiveButton(R.string.close,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int whichButton) {
-                                    dialogInterface.dismiss();
-                                }
-                            }
-                    )
-                    .show();
         }
     }
 }

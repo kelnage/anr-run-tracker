@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-
 Copyright (C) 2013 Nick Moore
 
 This file is part of ANR Run Tracker
@@ -17,7 +16,6 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 -->
 <resources>
 
@@ -57,8 +55,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         identities and opponents.\n\nAndroid: Netrunner and other associated trademarks of Fantasy
         Flight Games are used without permission.\n\nThe Android robot is reproduced or modified
         from work created and shared by Google and used according to terms described in the Creative
-        Commons 3.0 Attribution License.
-    </string>
+        Commons 3.0 Attribution License.\n\nANR Run Tracker is released under the GPLv3. You can
+        obtain its source code from https://bitbucket.org/kelnage/anr-run-tracker/.</string>
     <string name="add_opponent">Add an opponent</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -68,8 +66,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="delete">Delete</string>
     <string name="delete_opponent_title">Delete Opponent %s?</string>
     <string name="delete_opponent">Are you sure you wish to delete the opponent %s? All your games
-        against them will also be removed.
-    </string>
+        against them will also be removed.</string>
     <string name="opponent_menu">Opponent:</string>
     <string name="played_as_menu">Played As:</string>
     <string name="against_menu">Against:</string>
@@ -103,5 +100,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="player_stats_activity_label">Run Stats</string>
     <string name="delete_match_title">Delete Match Against %s?</string>
     <string name="delete_match">Are you sure you wish to delete the match against %s?</string>
+    <string name="backup_restore">Backup/Restore</string>
+    <string name="backup">Backup Database</string>
+    <string name="restore">Restore Database</string>
+    <string name="recent_backup">Most recent backup was on %1$s</string>
+    <string name="no_backups">There are no backups compatible with this version of %s</string>
+    <string name="backup_success">Backed up successfully!</string>
+    <string name="backup_failure">There was an error backing up</string>
+    <string name="no_database">No database found!</string>
+    <string name="overwrite">Overwrite</string>
+    <string name="overwrite_backup">This will overwrite an existing backup, continue?</string>
+    <string name="overwrite_backup_title">Overwrite existing backup?</string>
+    <string name="overwrite_restore">This will overwrite your current database, continue?</string>
+    <string name="overwrite_restore_title">Overwrite current database?</string>
+    <string name="unreadable_backup">Database file %s cannot be read</string>
+    <string name="restore_success">Restored backup successfully!</string>
+    <string name="restore_failure">There was an error restoring the database</string>
+    <string name="invalid_backup">The backup file has been corrupted</string>
 
 </resources>

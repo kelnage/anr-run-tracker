@@ -111,7 +111,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="overwrite">Overwrite</string>
     <string name="overwrite_backup">This will overwrite an existing backup, continue?</string>
     <string name="overwrite_backup_title">Overwrite existing backup?</string>
-    <string name="overwrite_restore">This will overwrite your current database, continue?</string>
+    <string name="overwrite_restore">This will overwrite your current database with the most recent backup, continue?</string>
     <string name="overwrite_restore_title">Overwrite current database?</string>
     <string name="unreadable_backup">Database file %s cannot be read</string>
     <string name="restore_success">Restored backup successfully!</string>

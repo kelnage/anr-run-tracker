@@ -103,8 +103,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="backup_restore">Backup/Restore</string>
     <string name="backup">Backup Database</string>
     <string name="restore">Restore Database</string>
-    <string name="recent_backup">Most recent backup was on %1$s</string>
-    <string name="no_backups">There are no backups compatible with this version of %s</string>
+    <string name="recent_backup">Latest backup was on %1$s</string>
+    <string name="no_backups">No backups compatible with this version of %s</string>
     <string name="backup_success">Backed up successfully!</string>
     <string name="backup_failure">There was an error backing up</string>
     <string name="no_database">No database found!</string>

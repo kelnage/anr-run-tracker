@@ -46,6 +46,7 @@ public class Game extends Instantiable implements Serializable {
     public GameEnd gameEnd;
     public String notes;
     public int date;
+    public boolean type;
     @ForeignKey
     public Match match;
 
@@ -68,6 +69,7 @@ public class Game extends Instantiable implements Serializable {
         gameEnd = GameEnd.AGENDAS;
         notes = "";
         date = Math.round(new Date().getTime() / 1000f);
+        type = false;
         match = null;
     }
 

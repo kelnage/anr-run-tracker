@@ -28,7 +28,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
@@ -70,6 +69,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
     private Game game;
     private Button opponent;
     private ToggleButton playerRole;
+    private ToggleButton gameType;
     private Spinner playerIdentity;
     private SeekBar playerAgenda;
     private TextView playerAgendaView;
@@ -88,6 +88,8 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
         opponent.setOnClickListener(this);
         playerRole = (ToggleButton) findViewById(R.id.playerRole);
         playerRole.setOnCheckedChangeListener(this);
+        gameType = (ToggleButton) findViewById(R.id.game_type);
+        gameType.setOnCheckedChangeListener(this);
         playerIdentity = (Spinner) findViewById(R.id.playerIdent);
         playerIdentity.setOnItemSelectedListener(this);
         playerAgenda = (SeekBar) findViewById(R.id.playerAP);
@@ -188,6 +190,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
         disableUpdates = true;
         opponent.setText(game.opponent.name);
         playerRole.setChecked(game.playerIdentity.faction.getRole().equals(Role.CORPORATION));
+        gameType.setChecked(game.type);
         updateIdentities(playerRole.isChecked());
         playerIdentity.setSelection(((StringableAdapter) playerIdentity.getAdapter())
                 .getPositionForItem(game.playerIdentity), false);
@@ -333,7 +336,12 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (disableUpdates) return;
-        updateIdentities(b);
+        if(compoundButton.equals(playerRole)) {
+            updateIdentities(b);
+        }
+        if(compoundButton.equals(gameType)) {
+            game.type = b;
+        }
         // will notify DataSetObservers - TODO: can this be done better?
         ((StringableAdapter) gameEnd.getAdapter()).setItems(GameEnd.values());
     }

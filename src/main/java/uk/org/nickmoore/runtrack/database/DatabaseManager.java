@@ -37,7 +37,7 @@ import uk.org.nickmoore.runtrack.model.Role;
  */
 public class DatabaseManager extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "NetrunnerTracker";
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
     public static final Class[] DATABASE_ENUMS = {Faction.class, GameEnd.class, Identity.class,
             Role.class};
 
@@ -123,7 +123,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 }
             }
         }
-        if (newVersion >= 6 && oldVersion < 6 && oldVersion > 2) {
+        if (newVersion >= 6 && oldVersion < 6 && oldVersion > 3) {
             String sql = String.format("ALTER TABLE %s ADD COLUMN match INTEGER DEFAULT NULL",
                     Game.class.getSimpleName());
             Log.i(getClass().getSimpleName(), sql);
@@ -140,6 +140,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     "WHERE (SELECT COUNT(*) FROM %2$s WHERE %1$s.match == %2$s._id) == 0 " +
                     "AND %1$s.match IS NOT NULL",
                     Game.class.getSimpleName(), Match.class.getSimpleName());
+            Log.i(getClass().getSimpleName(), sql);
+            sqLiteDatabase.execSQL(sql);
+        }
+        if (newVersion >= 8 && oldVersion < 8 && oldVersion > 3) {
+            String sql = String.format("ALTER TABLE %s ADD COLUMN type INTEGER DEFAULT false",
+                    Game.class.getSimpleName());
             Log.i(getClass().getSimpleName(), sql);
             sqLiteDatabase.execSQL(sql);
         }

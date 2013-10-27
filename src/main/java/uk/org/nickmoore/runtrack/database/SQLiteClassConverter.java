@@ -22,7 +22,6 @@ package uk.org.nickmoore.runtrack.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
@@ -489,6 +488,9 @@ public class SQLiteClassConverter {
             } else if (fieldType.clazz.getName().equals("long")
                     || fieldType.clazz.equals(Long.class)) {
                 field.set(instance, cursor.getLong(i));
+            } else if(fieldType.clazz.getName().equals("boolean")
+                    || fieldType.clazz.equals(Boolean.class)) {
+                field.set(instance, cursor.getString(i).toLowerCase().equals("true"));
             } else if (fieldType.clazz.equals(String.class)) {
                 field.set(instance, cursor.getString(i));
             } else if (Instantiable.class.isAssignableFrom(fieldType.clazz)) {

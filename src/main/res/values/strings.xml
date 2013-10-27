@@ -117,5 +117,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="restore_success">Restored backup successfully!</string>
     <string name="restore_failure">There was an error restoring the database</string>
     <string name="invalid_backup">The backup file has been corrupted</string>
+    <string name="game_type">Type</string>
+    <string name="casual">Casual</string>
+    <string name="competitive">Competitive</string>
 
 </resources>

@@ -212,6 +212,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                 opponent.setEnabled(true);
                 playerRole.setEnabled(true);
                 date.setEnabled(true);
+                gameType.setEnabled(true);
             }
             if(match.secondGame == game) {
                 cancel.setText(R.string.back);
@@ -219,6 +220,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                 opponent.setEnabled(false);
                 playerRole.setEnabled(false);
                 date.setEnabled(false);
+                gameType.setEnabled(false);
             }
         }
         disableUpdates = false;
@@ -406,6 +408,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                         match.opponent = match.firstGame.opponent;
                         match.secondGame.opponent = match.opponent;
                         match.secondGame.date = match.firstGame.date;
+                        match.secondGame.type = match.firstGame.type;
                         if(match.secondGame.getId() == 0) {
                             if(match.firstGame.playerIdentity.faction.getRole() == Role.CORPORATION) {
                                 match.secondGame.playerIdentity =

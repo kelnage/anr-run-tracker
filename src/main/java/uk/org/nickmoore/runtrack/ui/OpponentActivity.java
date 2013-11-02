@@ -24,6 +24,7 @@ import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -42,6 +43,7 @@ import uk.org.nickmoore.runtrack.R;
 import uk.org.nickmoore.runtrack.database.DatabaseManager;
 import uk.org.nickmoore.runtrack.database.SQLiteClassConverter;
 import uk.org.nickmoore.runtrack.database.UnmanageableClassException;
+import uk.org.nickmoore.runtrack.model.Game;
 import uk.org.nickmoore.runtrack.model.Opponent;
 
 /**
@@ -50,6 +52,7 @@ import uk.org.nickmoore.runtrack.model.Opponent;
 public class OpponentActivity extends ListActivity implements DialogInterface.OnClickListener {
     private Opponent opponent;
     private EditText nameInput;
+    private SQLiteDatabase database;
     private SQLiteClassConverter converter;
     private SimpleCursorAdapter adapter;
     private AlertDialog editDialog;
@@ -61,8 +64,8 @@ public class OpponentActivity extends ListActivity implements DialogInterface.On
         super.onCreate(savedInstanceState);
         nameInput = new EditText(this);
         nameInput.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        converter = new SQLiteClassConverter(
-                new DatabaseManager(getApplicationContext()).getWritableDatabase());
+        database = new DatabaseManager(getApplicationContext()).getWritableDatabase();
+        converter = new SQLiteClassConverter(database);
         opponents = converter.findAll(Opponent.class, "name");
         adapter = new SimpleCursorAdapter(getApplicationContext(),
                 android.R.layout.simple_list_item_1,
@@ -179,6 +182,8 @@ public class OpponentActivity extends ListActivity implements DialogInterface.On
             switch (whichButton) {
                 case DialogInterface.BUTTON_POSITIVE:
                     try {
+                        converter.deleteAll(Game.class, "opponent = ?",
+                                new String[] {Long.toString(opponent.getId())});
                         converter.delete(opponent);
                         opponents.requery();
                         adapter.notifyDataSetChanged();

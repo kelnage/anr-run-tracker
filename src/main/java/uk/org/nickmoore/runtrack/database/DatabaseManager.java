@@ -149,6 +149,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
             Log.i(getClass().getSimpleName(), sql);
             sqLiteDatabase.execSQL(sql);
         }
+        if(oldVersion < 8) {
+            // remove rogue games where their opponent has been deleted
+            String sql = String.format("DELETE FROM %1$s " +
+                    "WHERE (SELECT COUNT(*) FROM %2$s WHERE %1$s.opponent == %2$s._id) == 0",
+                    Game.class.getSimpleName(), Opponent.class.getSimpleName());
+            Log.i(getClass().getSimpleName(), sql);
+            sqLiteDatabase.execSQL(sql);
+        }
         for (Class clazz : DATABASE_ENUMS) {
             try {
                 for (Object object : clazz.getEnumConstants()) {

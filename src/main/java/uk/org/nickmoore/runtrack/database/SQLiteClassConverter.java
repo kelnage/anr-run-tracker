@@ -575,6 +575,11 @@ public class SQLiteClassConverter {
         db.delete(table, "_id=?", new String[]{getId(instance)});
     }
 
+    public void deleteAll(Class clazz, String selection, String[] selectionArgs) {
+        String table = clazz.getSimpleName();
+        db.delete(table, selection, selectionArgs);
+    }
+
     public void close() {
         db.close();
     }

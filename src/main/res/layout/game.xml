@@ -107,29 +107,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/game_type"
-                    android:id="@+id/game_type_label"
-                    android:layout_gravity="center_vertical|right" />
-
-                <ToggleButton
-                    style="@android:style/TextAppearance.Large"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/casual"
-                    android:id="@+id/game_type"
-                    android:textOn="@string/competitive"
-                    android:textOff="@string/casual"
-                    android:checked="false" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/playerIdent"
                     android:id="@+id/textView5"
                     android:layout_gravity="center_vertical|right" />
@@ -261,6 +238,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     android:layout_height="wrap_content"
                     android:id="@+id/gameEnd"
                     android:spinnerMode="dropdown" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/game_type"
+                    android:id="@+id/game_type_label"
+                    android:layout_gravity="center_vertical|right" />
+
+                <ToggleButton
+                    style="@android:style/TextAppearance.Large"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/casual"
+                    android:id="@+id/game_type"
+                    android:textOn="@string/competitive"
+                    android:textOff="@string/casual"
+                    android:checked="false" />
             </TableRow>
 
             <TableRow

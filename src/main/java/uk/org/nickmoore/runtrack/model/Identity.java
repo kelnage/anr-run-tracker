@@ -121,4 +121,18 @@ public enum Identity implements Stringable {
         return Identity.values();
     }
 
+    public static Identity[] getIdentities() {
+        return new Identity[] {
+                NOISE, WHIZZARD, REINA_ROJA,
+                GABRIEL_SANTIAGO, ANDROMEDA, LARAMY_FISK,
+                KATE_MAC_MACCAFFREY, CHAOS_THEORY, KIT, THE_PROFESSOR, EXILE, THE_COLLECTIVE,
+                ENGINEERING_THE_FUTURE, STRONGER_TOGETHER, NEXT_DESIGN, CUSTOM_BIOTICS,
+                CEREBRAL_IMAGING,
+                PERSONAL_EVOLUTION, REPLICATING_PERFECTION,
+                MAKING_NEWS, THE_WORLD_IS_YOURS,
+                BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT, GRNDL
+
+        };
+    }
+
 }

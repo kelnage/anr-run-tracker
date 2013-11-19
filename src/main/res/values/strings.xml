@@ -120,5 +120,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="game_type">Type</string>
     <string name="casual">Casual</string>
     <string name="competitive">Competitive</string>
+    <string name="deck_management">Your Decks</string>
+    <string name="deck">Deck</string>
+    <string name="add_deck">Add a deck</string>
+    <string name="name">Name</string>
+    <string name="identity">Identity</string>
+    <string name="deck_list_activity_label">Your Decks</string>
+    <string name="deck_activity_label">%s A Deck</string>
 
 </resources>

@@ -24,6 +24,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import uk.org.nickmoore.runtrack.model.Deck;
 import uk.org.nickmoore.runtrack.model.Faction;
 import uk.org.nickmoore.runtrack.model.Game;
 import uk.org.nickmoore.runtrack.model.GameEnd;
@@ -37,7 +38,7 @@ import uk.org.nickmoore.runtrack.model.Role;
  */
 public class DatabaseManager extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "NetrunnerTracker";
-    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 9;
     public static final Class[] DATABASE_ENUMS = {Faction.class, GameEnd.class, Identity.class,
             Role.class};
 
@@ -156,6 +157,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     Game.class.getSimpleName(), Opponent.class.getSimpleName());
             Log.i(getClass().getSimpleName(), sql);
             sqLiteDatabase.execSQL(sql);
+        }
+        if(newVersion >= 9 && oldVersion < 9) {
+            converter.createTable(Deck.class);
         }
         for (Class clazz : DATABASE_ENUMS) {
             try {

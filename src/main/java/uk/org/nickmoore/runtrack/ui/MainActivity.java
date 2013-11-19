@@ -44,6 +44,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button newMatch;
     private Button statistics;
     private Button history;
+    private Button deckManagement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         statistics.setOnClickListener(this);
         history = (Button) findViewById(R.id.history);
         history.setOnClickListener(this);
+        deckManagement = (Button) findViewById(R.id.deckManagement);
+        deckManagement.setOnClickListener(this);
         converter = new SQLiteClassConverter(
                 new DatabaseManager(getApplicationContext()).getWritableDatabase());
     }
@@ -118,6 +121,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
             startActivity(intent);
         } else if (view.equals(statistics)) {
             intent.setClass(getApplicationContext(), PlayerStatsActivity.class);
+            startActivity(intent);
+        } else if (view.equals(deckManagement)) {
+            intent.setClass(getApplicationContext(), DeckListActivity.class);
             startActivity(intent);
         }
     }

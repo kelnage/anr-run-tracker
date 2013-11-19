@@ -75,6 +75,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="uk.org.nickmoore.runtrack.ui.DeckListActivity"
+            android:label="@string/deck_list_activity_label" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="uk.org.nickmoore.runtrack.ui.DeckActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

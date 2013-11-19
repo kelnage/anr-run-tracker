@@ -49,6 +49,8 @@ public class Game extends Instantiable implements Serializable {
     public boolean type;
     @ForeignKey
     public Match match;
+    @ForeignKey
+    public Deck deck;
 
     public Game() {
         setId(0);
@@ -71,6 +73,7 @@ public class Game extends Instantiable implements Serializable {
         date = Math.round(new Date().getTime() / 1000f);
         type = false;
         match = null;
+        deck = null;
     }
 
     public Result getPlayerResult(GameEnd gameEnd) {

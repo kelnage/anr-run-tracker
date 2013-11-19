@@ -111,7 +111,7 @@ public class OpponentActivity extends ListActivity implements DialogInterface.On
             opponents.moveToPosition(info.position);
             opponent = converter.readCursor(Opponent.class, opponents);
             Log.v(getClass().getSimpleName(), opponent.toString());
-            getMenuInflater().inflate(R.menu.opponent_long, menu);
+            getMenuInflater().inflate(R.menu.long_edit_delete, menu);
         }
         super.onCreateContextMenu(menu, v, menuInfo);
     }

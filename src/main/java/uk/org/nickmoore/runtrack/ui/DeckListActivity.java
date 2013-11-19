@@ -19,16 +19,19 @@
 
 package uk.org.nickmoore.runtrack.ui;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,6 +40,7 @@ import uk.org.nickmoore.runtrack.R;
 import uk.org.nickmoore.runtrack.database.DatabaseManager;
 import uk.org.nickmoore.runtrack.database.InstantiableCursorAdapter;
 import uk.org.nickmoore.runtrack.database.SQLiteClassConverter;
+import uk.org.nickmoore.runtrack.database.UnmanageableClassException;
 import uk.org.nickmoore.runtrack.model.Deck;
 
 /**
@@ -46,6 +50,8 @@ public class DeckListActivity extends ListActivity implements DialogInterface.On
     private SQLiteClassConverter converter;
     private Cursor decks;
     private CursorAdapter adapter;
+    private AlertDialog deleteDialog;
+    private Deck deck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,10 @@ public class DeckListActivity extends ListActivity implements DialogInterface.On
                                 instance.identity.toCharSequence(context, false));
                     }
                 });
+        deleteDialog = new AlertDialog.Builder(this)
+                .setPositiveButton(R.string.ok, this)
+                .setNegativeButton(R.string.cancel, this)
+                .create();
         setListAdapter(adapter);
         if(decks.getCount() == 0) {
             Intent intent = new Intent();
@@ -98,26 +108,58 @@ public class DeckListActivity extends ListActivity implements DialogInterface.On
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.equals(getListView())) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+            decks.moveToPosition(info.position);
+            deck = converter.readCursor(Deck.class, decks);
+            Log.v(getClass().getSimpleName(), deck.toString());
+            getMenuInflater().inflate(R.menu.long_delete, menu);
+        }
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        return super.onContextItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.delete:
+                deleteDialog.setTitle(getString(R.string.delete_deck_title, deck.name));
+                deleteDialog.setMessage(getString(R.string.delete_deck, deck.name));
+                deleteDialog.show();
+                return true;
+        }
+        return false;
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
+        decks.moveToPosition(position);
+        Intent result = new Intent();
+        result.putExtra("deck", converter.readCursor(Deck.class, decks));
+        setResult(RESULT_OK, result);
+        finish();
     }
 
     @Override
-    public void onClick(DialogInterface dialogInterface, int i) {
-        decks.moveToPosition(i);
-        Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), DeckActivity.class);
-        intent.putExtra("deck", converter.readCursor(Deck.class, decks));
-        startActivity(intent);
+    public void onClick(DialogInterface dialogInterface, int whichButton) {
+        if (dialogInterface.equals(deleteDialog)) {
+            switch (whichButton) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    try {
+                        // TODO: update all games using this deck to set their deck to null
+                        converter.delete(deck);
+                        decks.requery();
+                        adapter.notifyDataSetChanged();
+                    } catch (UnmanageableClassException ex) {
+                        // ???
+                    }
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    // do nothing :)
+                    break;
+            }
+        }
+        deck = null;
+        dialogInterface.dismiss();
     }
 
     @Override

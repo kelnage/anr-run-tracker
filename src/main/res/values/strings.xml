@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 Copyright (C) 2013 Nick Moore
 
 This file is part of ANR Run Tracker
@@ -127,5 +126,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="identity">Identity</string>
     <string name="deck_list_activity_label">Your Decks</string>
     <string name="deck_activity_label">%s A Deck</string>
+    <string name="delete_deck_title">Delete Deck %s?</string>
+    <string name="delete_deck">Are you sure you wish to delete the deck %s? Your games with this deck will not be deleted.</string>
 
 </resources>

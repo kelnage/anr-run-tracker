@@ -191,7 +191,7 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
             recentGames.moveToPosition(info.position);
             game = converter.readCursor(Game.class, recentGames);
             Log.v(getClass().getSimpleName(), game.toString());
-            getMenuInflater().inflate(R.menu.game_long, menu);
+            getMenuInflater().inflate(R.menu.long_delete, menu);
         }
         super.onCreateContextMenu(menu, v, menuInfo);
     }

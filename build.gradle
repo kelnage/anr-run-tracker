@@ -22,7 +22,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
+        classpath 'com.android.tools.build:gradle:0.10.+'
     }
 }
 apply plugin: 'android'
@@ -35,17 +35,17 @@ repositories {
 }
 
 android {
-    compileSdkVersion 18
-    buildToolsVersion "17.0.0"
+    compileSdkVersion 19
+    buildToolsVersion "19.1.0"
 
     defaultConfig {
         minSdkVersion 7
-        targetSdkVersion 18
+        targetSdkVersion 19
     }
 }
 
 dependencies {
-	compile 'com.android.support:support-v4:18.0.+'
-	compile 'com.android.support:appcompat-v7:18.0.+'
+	compile 'com.android.support:support-v4:19.1.+'
+	compile 'com.android.support:appcompat-v7:19.1.+'
     compile group: 'com.androidplot', name: 'androidplot-core', version: '0.6.1-SNAPSHOT'
 }

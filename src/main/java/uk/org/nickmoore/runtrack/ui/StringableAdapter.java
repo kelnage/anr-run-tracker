@@ -69,6 +69,11 @@ public class StringableAdapter implements SpinnerAdapter {
         Arrays.sort(items, new Comparator<Stringable>() {
             @Override
             public int compare(Stringable stringable, Stringable stringable2) {
+                if (stringable == null) {
+                    return -1;
+                } else if (stringable2 == null) {
+                    return 1;
+                }
                 return stringable.toCharSequence(context, shortTitles).toString().compareTo(
                         stringable2.toCharSequence(context, shortTitles).toString());
             }

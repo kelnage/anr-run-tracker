@@ -30,6 +30,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -48,6 +49,7 @@ import uk.org.nickmoore.runtrack.database.DatabaseManager;
 import uk.org.nickmoore.runtrack.database.NoSuchInstanceException;
 import uk.org.nickmoore.runtrack.database.SQLiteClassConverter;
 import uk.org.nickmoore.runtrack.database.UnmanageableClassException;
+import uk.org.nickmoore.runtrack.model.Deck;
 import uk.org.nickmoore.runtrack.model.Game;
 import uk.org.nickmoore.runtrack.model.GameEnd;
 import uk.org.nickmoore.runtrack.model.Identity;
@@ -70,6 +72,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
     private Button opponent;
     private ToggleButton playerRole;
     private ToggleButton gameType;
+    private Spinner playerDeck;
     private Spinner playerIdentity;
     private SeekBar playerAgenda;
     private TextView playerAgendaView;
@@ -90,6 +93,8 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
         playerRole.setOnCheckedChangeListener(this);
         gameType = (ToggleButton) findViewById(R.id.game_type);
         gameType.setOnCheckedChangeListener(this);
+        playerDeck = (Spinner) findViewById(R.id.playerDeck);
+        playerDeck.setOnItemSelectedListener(this);
         playerIdentity = (Spinner) findViewById(R.id.playerIdent);
         playerIdentity.setOnItemSelectedListener(this);
         playerAgenda = (SeekBar) findViewById(R.id.playerAP);
@@ -175,6 +180,15 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
             startActivityForResult(intent, OPPONENT_REQUEST);
         }
         loadGame();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(converter.getCount(Deck.class) == 0) {
+            // TODO: remove playerDeck from the UI, until the user creates one
+            ((ViewManager) getParent()).removeView(playerDeck);
+        }
     }
 
     private void loadGame() {
@@ -281,6 +295,8 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                     save.setText(R.string.next);
                 }
             }
+        } else if (adapterView.equals(playerDeck)) {
+            // TODO
         }
     }
 

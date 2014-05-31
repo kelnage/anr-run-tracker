@@ -110,12 +110,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     android:text="@string/playerIdent"
                     android:id="@+id/textView5"
                     android:layout_gravity="center_vertical|right" />
-
-                <Spinner
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/playerIdent"
-                    android:spinnerMode="dropdown" />
+                <LinearLayout android:orientation="vertical">
+                    <Spinner
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/playerDeck"
+                        android:spinnerMode="dropdown" />
+                    <Spinner
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/playerIdent"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
             </TableRow>
 
             <TableRow

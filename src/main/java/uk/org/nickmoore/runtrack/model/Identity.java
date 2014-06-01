@@ -28,7 +28,7 @@ import uk.org.nickmoore.runtrack.R;
  */
 @SuppressWarnings("WeakerAccess")
 public enum Identity implements Stringable {
-    NOISE(R.string.noise, R.string.noise_short, Faction.ANARCH),
+    NOISE(R.string.noise, Faction.ANARCH),
     WHIZZARD(R.string.whizzard, R.string.whizzard_short, Faction.ANARCH),
     GABRIEL_SANTIAGO(R.string.gabe, R.string.gabe_short, Faction.CRIMINAL),
     ANDROMEDA(R.string.andromeda, R.string.andromeda_short, Faction.CRIMINAL),
@@ -42,7 +42,7 @@ public enum Identity implements Stringable {
             Faction.JINTEKI),
     REPLICATING_PERFECTION(R.string.replicating_perfection, R.string.replicating_perfection_short,
             Faction.JINTEKI),
-    MAKING_NEWS(R.string.making_news, R.string.making_news_short, Faction.NBN),
+    MAKING_NEWS(R.string.making_news, Faction.NBN),
     THE_WORLD_IS_YOURS(R.string.the_world_is_yours, R.string.the_world_is_yours_short, Faction.NBN),
     BUILDING_A_BETTER_WORLD(R.string.building_a_better_world,
             R.string.building_a_better_world_short, Faction.WEYLAND),
@@ -50,15 +50,25 @@ public enum Identity implements Stringable {
             Faction.WEYLAND),
     THE_PROFESSOR(R.string.the_professor, R.string.the_professor_short, Faction.SHAPER),
     KIT(R.string.kit, R.string.kit_short, Faction.SHAPER),
-    EXILE(R.string.exile, R.string.exile_short, Faction.SHAPER),
-    NEXT_DESIGN(R.string.next_design, R.string.next_design_short, Faction.HAAS_BIOROID),
+    EXILE(R.string.exile, Faction.SHAPER),
+    NEXT_DESIGN(R.string.next_design, Faction.HAAS_BIOROID),
     CEREBRAL_IMAGING(R.string.cerebral_imaging, R.string.cerebral_imaging_short,
             Faction.HAAS_BIOROID),
     CUSTOM_BIOTICS(R.string.custom_biotics, R.string.custom_biotics_short, Faction.HAAS_BIOROID),
     REINA_ROJA(R.string.reina_roja, R.string.reina_roja_short, Faction.ANARCH),
     THE_COLLECTIVE(R.string.the_collective, R.string.the_collective_short, Faction.SHAPER),
     LARAMY_FISK(R.string.laramy_fisk, R.string.laramy_fisk_short, Faction.CRIMINAL),
-    GRNDL(R.string.grndl, Faction.WEYLAND);
+    GRNDL(R.string.grndl, Faction.WEYLAND),
+    IAIN(R.string.iain_stirling, R.string.iain_stirling_short, Faction.CRIMINAL),
+    KEN_TENMA(R.string.ken_express_tenma, R.string.ken_express_tenma_short, Faction.CRIMINAL),
+    SILHOUETTE(R.string.silhouette, Faction.CRIMINAL),
+    HARMONY_MEDTECH(R.string.harmony_medtech, R.string.harmony_medtech_short, Faction.JINTEKI),
+    NISEI_DIVISION(R.string.nisei_division, R.string.nisei_division_short, Faction.JINTEKI),
+    TENNIN_INSTITUTE(R.string.tennin_institute, R.string.tennin_institute_short, Faction.JINTEKI),
+    SELECTIVE_JINTEKI(R.string.selective_mind_mapping, R.string.selective_mind_mapping_short,
+            Faction.JINTEKI),
+    SELECTIVE_HB(R.string.selective_mind_mapping, R.string.selective_mind_mapping_short,
+            Faction.HAAS_BIOROID);
 
     public final int textId;
     public final int shortTextId;
@@ -89,15 +99,17 @@ public enum Identity implements Stringable {
             case ANARCH:
                 return new Identity[]{NOISE, WHIZZARD, REINA_ROJA};
             case CRIMINAL:
-                return new Identity[]{GABRIEL_SANTIAGO, ANDROMEDA, LARAMY_FISK};
+                return new Identity[]{GABRIEL_SANTIAGO, ANDROMEDA, LARAMY_FISK, IAIN, KEN_TENMA,
+                        SILHOUETTE};
             case SHAPER:
                 return new Identity[]{KATE_MAC_MACCAFFREY, CHAOS_THEORY, KIT, THE_PROFESSOR,
                         EXILE, THE_COLLECTIVE};
             case HAAS_BIOROID:
                 return new Identity[]{ENGINEERING_THE_FUTURE, STRONGER_TOGETHER, NEXT_DESIGN,
-                        CUSTOM_BIOTICS, CEREBRAL_IMAGING};
+                        CUSTOM_BIOTICS, CEREBRAL_IMAGING, SELECTIVE_HB};
             case JINTEKI:
-                return new Identity[]{PERSONAL_EVOLUTION, REPLICATING_PERFECTION};
+                return new Identity[]{PERSONAL_EVOLUTION, REPLICATING_PERFECTION, HARMONY_MEDTECH,
+                        NISEI_DIVISION, TENNIN_INSTITUTE, SELECTIVE_JINTEKI};
             case NBN:
                 return new Identity[]{MAKING_NEWS, THE_WORLD_IS_YOURS};
             case WEYLAND:
@@ -111,12 +123,13 @@ public enum Identity implements Stringable {
             case RUNNER:
                 return new Identity[]{NOISE, WHIZZARD, REINA_ROJA, GABRIEL_SANTIAGO, ANDROMEDA,
                         LARAMY_FISK, KATE_MAC_MACCAFFREY, CHAOS_THEORY, KIT, THE_PROFESSOR, EXILE,
-                        THE_COLLECTIVE};
+                        THE_COLLECTIVE, IAIN, KEN_TENMA, SILHOUETTE};
             case CORPORATION:
                 return new Identity[]{ENGINEERING_THE_FUTURE, STRONGER_TOGETHER, NEXT_DESIGN,
                         CUSTOM_BIOTICS, CEREBRAL_IMAGING, PERSONAL_EVOLUTION,
                         REPLICATING_PERFECTION, MAKING_NEWS, THE_WORLD_IS_YOURS,
-                        BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT, GRNDL};
+                        BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT, GRNDL, HARMONY_MEDTECH,
+                        NISEI_DIVISION, TENNIN_INSTITUTE, SELECTIVE_JINTEKI, SELECTIVE_HB};
         }
         return Identity.values();
     }

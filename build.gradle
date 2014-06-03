@@ -49,3 +49,8 @@ dependencies {
 	compile 'com.android.support:appcompat-v7:19.1.+'
     compile group: 'com.androidplot', name: 'androidplot-core', version: '0.6.1-SNAPSHOT'
 }
+
+if(project.hasProperty("runtrack.signing")
+        && new File(project.property("runtrack.signing") + ".gradle").exists()) {
+    apply from: project.property("runtrack.signing") + ".gradle";
+}

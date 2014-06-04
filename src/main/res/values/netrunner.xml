@@ -44,7 +44,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="engineering_the_future">Engineering The Future</string>
     <string name="engineering_the_future_short">ETF</string>
     <string name="stronger_together">Stronger Together</string>
-    <string name="stronger_together_short">ST</string>
+    <string name="stronger_together_short">Str Together</string>
     <string name="jinteki">Jinteki</string>
     <string name="jinteki_short">Jinteki</string>
     <string name="personal_evolution">Personal Evolution</string>
@@ -55,8 +55,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="nbn_short">NBN</string>
     <string name="making_news">Making News</string>
     <string name="making_news_short">Making News</string>
-    <string name="the_world_is_yours">The World Is Yours</string>
-    <string name="the_world_is_yours_short">TWIY</string>
+    <string name="the_world_is_yours">The World Is Yours*</string>
+    <string name="the_world_is_yours_short">TWIY*</string>
     <string name="weyland">Weyland</string>
     <string name="weyland_short">Weyland</string>
     <string name="building_a_better_world">Building A Better World</string>
@@ -64,13 +64,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="because_we_built_it">Because We Built It</string>
     <string name="because_we_built_it_short">BWBI</string>
     <string name="next_design">Next Design</string>
-    <string name="next_design_short">ND</string>
     <string name="cerebral_imaging">Cerebral Imaging</string>
-    <string name="cerebral_imaging_short">CI</string>
+    <string name="cerebral_imaging_short">Cerebral Img</string>
     <string name="custom_biotics">Custom Biotics</string>
-    <string name="custom_biotics_short">CB</string>
+    <string name="custom_biotics_short">Custom Bio</string>
     <string name="the_professor">The Professor</string>
-    <string name="the_professor_short">The Prof.</string>
+    <string name="the_professor_short">The Prof</string>
     <string name="kit">Rielle \"Kit\" Peddler</string>
     <string name="kit_short">Kit</string>
     <string name="exile">Exile</string>
@@ -82,5 +81,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="laramy_fisk">Laramy Fisk</string>
     <string name="laramy_fisk_short">Fisk</string>
     <string name="grndl">GRNDL</string>
-
+    <string name="iain_stirling">Iain Stirling</string>
+    <string name="iain_stirling_short">Iain S</string>
+    <string name="ken_express_tenma">Ken \"Express\" Tenma</string>
+    <string name="ken_express_tenma_short">Express</string>
+    <string name="silhouette">Silhouette</string>
+    <string name="harmony_medtech">Harmony Medtech</string>
+    <string name="harmony_medtech_short">Harmony Med</string>
+    <string name="nisei_division">Nisei Division</string>
+    <string name="nisei_division_short">Nisei Div</string>
+    <string name="tennin_institute">Tennin Institute</string>
+    <string name="tennin_institute_short">Tennin Inst</string>
+    <string name="selective_mind_mapping">Selective Mind-Mapping</string>
+    <string name="selective_mind_mapping_short">Selective M-M</string>
 </resources>

@@ -38,7 +38,7 @@ import uk.org.nickmoore.runtrack.model.Role;
  */
 public class DatabaseManager extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "NetrunnerTracker";
-    public static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_VERSION = 11;
     public static final Class[] DATABASE_ENUMS = {Faction.class, GameEnd.class, Identity.class,
             Role.class};
 
@@ -158,14 +158,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
             Log.i(getClass().getSimpleName(), sql);
             sqLiteDatabase.execSQL(sql);
         }
-        if(newVersion >= 9 && oldVersion < 9) {
+        if(newVersion >= 11 && oldVersion < 11) {
             converter.createTable(Deck.class);
-        }
-        if(newVersion >= 10 && oldVersion < 10) {
-            String sql = String.format("ALTER TABLE %s ADD COLUMN deck INTEGER DEFAULT NULL",
-                    Game.class.getSimpleName());
-            Log.i(getClass().getSimpleName(), sql);
-            sqLiteDatabase.execSQL(sql);
         }
         for (Class clazz : DATABASE_ENUMS) {
             try {

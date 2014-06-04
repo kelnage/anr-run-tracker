@@ -22,15 +22,16 @@ package uk.org.nickmoore.runtrack.ui;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -46,7 +47,9 @@ import java.util.Calendar;
 
 import uk.org.nickmoore.runtrack.R;
 import uk.org.nickmoore.runtrack.database.DatabaseManager;
+import uk.org.nickmoore.runtrack.database.InstantiableCursorAdapter;
 import uk.org.nickmoore.runtrack.database.NoSuchInstanceException;
+import uk.org.nickmoore.runtrack.database.NullChoiceAdapter;
 import uk.org.nickmoore.runtrack.database.SQLiteClassConverter;
 import uk.org.nickmoore.runtrack.database.UnmanageableClassException;
 import uk.org.nickmoore.runtrack.model.Deck;
@@ -186,8 +189,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
     protected void onResume() {
         super.onResume();
         if(converter.getCount(Deck.class) == 0) {
-            // TODO: remove playerDeck from the UI, until the user creates one
-            ((ViewManager) getParent()).removeView(playerDeck);
+            playerDeck.setVisibility(View.GONE);
         }
     }
 
@@ -245,6 +247,22 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
         int opponentPos = opponentIdentity.getSelectedItemPosition();
         Role playerRole = isChecked ? Role.CORPORATION : Role.RUNNER;
         Role opponentRole = !isChecked ? Role.CORPORATION : Role.RUNNER;
+        Cursor decks = converter.findAll(Deck.class, "name");
+        playerDeck.setAdapter(new NullChoiceAdapter(getApplicationContext(),
+                new InstantiableCursorAdapter<Deck>(getApplicationContext(), decks,
+                    android.R.layout.simple_list_item_1, converter, Deck.class,
+                    new InstantiableCursorAdapter.ViewRenderer<Deck>() {
+                        @Override
+                        public void populateView(Context context, View view, Deck instance, Cursor cursor) {
+                            if(instance == null) {
+                                ((TextView) view.findViewById(android.R.id.text1)).setText("");
+                            }
+                            else {
+                                ((TextView) view.findViewById(android.R.id.text1)).setText(instance.name);
+                            }
+                        }
+                    })
+                ));
         playerIdentity.setAdapter(new StringableAdapter(this, Identity.getIdentities(playerRole),
                 shortTitles));
         opponentIdentity.setAdapter(new StringableAdapter(this,

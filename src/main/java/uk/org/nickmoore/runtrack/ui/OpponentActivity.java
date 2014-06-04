@@ -123,10 +123,8 @@ public class OpponentActivity extends ListActivity implements DialogInterface.On
                 editOpponent(opponent);
                 return true;
             case R.id.delete:
-                deleteDialog.setTitle(String.format(getString(R.string.delete_opponent_title),
-                        opponent.name));
-                deleteDialog.setMessage(String.format(getString(R.string.delete_opponent),
-                        opponent.name));
+                deleteDialog.setTitle(getString(R.string.delete_opponent_title, opponent.name));
+                deleteDialog.setMessage(getString(R.string.delete_opponent, opponent.name));
                 deleteDialog.show();
                 return true;
         }

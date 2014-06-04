@@ -201,16 +201,13 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
         switch (item.getItemId()) {
             case R.id.delete:
                 if(game.match != null && game.match.getId() != 0) {
-                    deleteDialog.setTitle(String.format(getString(R.string.delete_match_title),
-                            game.opponent.name));
-                    deleteDialog.setMessage(String.format(getString(R.string.delete_match),
+                    deleteDialog.setTitle(getString(R.string.delete_match_title, game.opponent.name));
+                    deleteDialog.setMessage(getString(R.string.delete_match,
                             game.opponent.name));
                 }
                 else {
-                    deleteDialog.setTitle(String.format(getString(R.string.delete_game_title),
-                            game.opponent.name));
-                    deleteDialog.setMessage(String.format(getString(R.string.delete_game),
-                            game.opponent.name));
+                    deleteDialog.setTitle(getString(R.string.delete_game_title, game.opponent.name));
+                    deleteDialog.setMessage(getString(R.string.delete_game, game.opponent.name));
                 }
                 deleteDialog.show();
                 return true;

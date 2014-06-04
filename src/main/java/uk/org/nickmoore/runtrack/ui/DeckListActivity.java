@@ -21,10 +21,12 @@ package uk.org.nickmoore.runtrack.ui;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -42,12 +44,14 @@ import uk.org.nickmoore.runtrack.database.InstantiableCursorAdapter;
 import uk.org.nickmoore.runtrack.database.SQLiteClassConverter;
 import uk.org.nickmoore.runtrack.database.UnmanageableClassException;
 import uk.org.nickmoore.runtrack.model.Deck;
+import uk.org.nickmoore.runtrack.model.Game;
 
 /**
  *
  */
 public class DeckListActivity extends ListActivity implements DialogInterface.OnClickListener {
     private SQLiteClassConverter converter;
+    private SQLiteDatabase database;
     private Cursor decks;
     private CursorAdapter adapter;
     private AlertDialog deleteDialog;
@@ -56,8 +60,8 @@ public class DeckListActivity extends ListActivity implements DialogInterface.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        converter = new SQLiteClassConverter(
-                new DatabaseManager(getApplicationContext()).getWritableDatabase());
+        database = new DatabaseManager(getApplicationContext()).getWritableDatabase();
+        converter = new SQLiteClassConverter(database);
         decks = converter.findAll(Deck.class, "name");
         adapter = new InstantiableCursorAdapter<Deck>(getApplicationContext(), decks,
                 android.R.layout.simple_list_item_2, converter, Deck.class,
@@ -80,6 +84,7 @@ public class DeckListActivity extends ListActivity implements DialogInterface.On
             intent.putExtra("deck", new Deck());
             startActivity(intent);
         }
+        registerForContextMenu(getListView());
     }
 
     @Override
@@ -108,12 +113,13 @@ public class DeckListActivity extends ListActivity implements DialogInterface.On
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        Log.i(getClass().getSimpleName(), v.toString());
         if (v.equals(getListView())) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
             decks.moveToPosition(info.position);
             deck = converter.readCursor(Deck.class, decks);
             Log.v(getClass().getSimpleName(), deck.toString());
-            getMenuInflater().inflate(R.menu.long_delete, menu);
+            getMenuInflater().inflate(R.menu.long_edit_delete, menu);
         }
         super.onCreateContextMenu(menu, v, menuInfo);
     }
@@ -121,6 +127,12 @@ public class DeckListActivity extends ListActivity implements DialogInterface.On
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.edit:
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), DeckActivity.class);
+                intent.putExtra("deck", deck);
+                startActivity(intent);
+                return true;
             case R.id.delete:
                 deleteDialog.setTitle(getString(R.string.delete_deck_title, deck.name));
                 deleteDialog.setMessage(getString(R.string.delete_deck, deck.name));
@@ -145,7 +157,12 @@ public class DeckListActivity extends ListActivity implements DialogInterface.On
             switch (whichButton) {
                 case DialogInterface.BUTTON_POSITIVE:
                     try {
-                        // TODO: update all games using this deck to set their deck to null
+                        // update all games using this deck to set their deck to null
+                        ContentValues values = new ContentValues();
+                        values.put("deck", (String) null);
+                        database.update(Game.class.getSimpleName(), values, "deck = ?",
+                                new String[] {Long.toString(deck.getId())});
+                        // now we can delete the deck safely
                         converter.delete(deck);
                         decks.requery();
                         adapter.notifyDataSetChanged();

@@ -94,4 +94,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="tennin_institute_short">Tennin Inst</string>
     <string name="selective_mind_mapping">Selective Mind-Mapping</string>
     <string name="selective_mind_mapping_short">Selective M-M</string>
+    <string name="blue_sun">Blue Sun</string>
+    <string name="nasir_meidan">Nasir Meidan</string>
+    <string name="nasir_meidan_short">Nasir</string>
+    <string name="leela_patel">Leela Patel</string>
+    <string name="leela_patel_short">Leela</string>
 </resources>

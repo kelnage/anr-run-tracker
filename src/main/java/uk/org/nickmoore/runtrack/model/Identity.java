@@ -68,7 +68,10 @@ public enum Identity implements Stringable {
     SELECTIVE_JINTEKI(R.string.selective_mind_mapping, R.string.selective_mind_mapping_short,
             Faction.JINTEKI),
     SELECTIVE_HB(R.string.selective_mind_mapping, R.string.selective_mind_mapping_short,
-            Faction.HAAS_BIOROID);
+            Faction.HAAS_BIOROID),
+    BLUE_SUN(R.string.blue_sun, Faction.WEYLAND),
+    NASIR_MEIDAN(R.string.nasir_meidan, R.string.nasir_meidan_short, Faction.SHAPER),
+    LEELA_PATEL(R.string.leela_patel, R.string.leela_patel_short, Faction.CRIMINAL);
 
     public final int textId;
     public final int shortTextId;
@@ -100,10 +103,10 @@ public enum Identity implements Stringable {
                 return new Identity[]{NOISE, WHIZZARD, REINA_ROJA};
             case CRIMINAL:
                 return new Identity[]{GABRIEL_SANTIAGO, ANDROMEDA, LARAMY_FISK, IAIN, KEN_TENMA,
-                        SILHOUETTE};
+                        SILHOUETTE, LEELA_PATEL};
             case SHAPER:
                 return new Identity[]{KATE_MAC_MACCAFFREY, CHAOS_THEORY, KIT, THE_PROFESSOR,
-                        EXILE, THE_COLLECTIVE};
+                        EXILE, THE_COLLECTIVE, NASIR_MEIDAN};
             case HAAS_BIOROID:
                 return new Identity[]{ENGINEERING_THE_FUTURE, STRONGER_TOGETHER, NEXT_DESIGN,
                         CUSTOM_BIOTICS, CEREBRAL_IMAGING, SELECTIVE_HB};
@@ -113,7 +116,8 @@ public enum Identity implements Stringable {
             case NBN:
                 return new Identity[]{MAKING_NEWS, THE_WORLD_IS_YOURS};
             case WEYLAND:
-                return new Identity[]{BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT, GRNDL};
+                return new Identity[]{BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT, GRNDL,
+                        BLUE_SUN};
         }
         return Identity.values();
     }
@@ -123,13 +127,14 @@ public enum Identity implements Stringable {
             case RUNNER:
                 return new Identity[]{NOISE, WHIZZARD, REINA_ROJA, GABRIEL_SANTIAGO, ANDROMEDA,
                         LARAMY_FISK, KATE_MAC_MACCAFFREY, CHAOS_THEORY, KIT, THE_PROFESSOR, EXILE,
-                        THE_COLLECTIVE, IAIN, KEN_TENMA, SILHOUETTE};
+                        THE_COLLECTIVE, IAIN, KEN_TENMA, SILHOUETTE, LEELA_PATEL, NASIR_MEIDAN};
             case CORPORATION:
                 return new Identity[]{ENGINEERING_THE_FUTURE, STRONGER_TOGETHER, NEXT_DESIGN,
                         CUSTOM_BIOTICS, CEREBRAL_IMAGING, PERSONAL_EVOLUTION,
                         REPLICATING_PERFECTION, MAKING_NEWS, THE_WORLD_IS_YOURS,
                         BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT, GRNDL, HARMONY_MEDTECH,
-                        NISEI_DIVISION, TENNIN_INSTITUTE, SELECTIVE_JINTEKI, SELECTIVE_HB};
+                        NISEI_DIVISION, TENNIN_INSTITUTE, SELECTIVE_JINTEKI, SELECTIVE_HB,
+                        BLUE_SUN};
         }
         return Identity.values();
     }

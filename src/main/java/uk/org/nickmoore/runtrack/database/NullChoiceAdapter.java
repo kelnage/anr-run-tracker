@@ -119,4 +119,8 @@ public class NullChoiceAdapter extends BaseAdapter {
     public boolean isEmpty() {
         return false;
     }
+
+    public BaseAdapter getAdapter() {
+        return adapter;
+    }
 }

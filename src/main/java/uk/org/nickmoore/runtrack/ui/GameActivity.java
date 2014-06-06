@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
@@ -191,6 +192,9 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
         if(converter.getCount(Deck.class) == 0) {
             playerDeck.setVisibility(View.GONE);
         }
+        else {
+            updateDecks();
+        }
     }
 
     private void loadGame() {
@@ -207,7 +211,13 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
         opponent.setText(game.opponent.name);
         playerRole.setChecked(game.playerIdentity.faction.getRole().equals(Role.CORPORATION));
         gameType.setChecked(game.type);
+        updateDecks();
         updateIdentities(playerRole.isChecked());
+        if(game.deck != null) {
+            playerDeck.setSelection(((InstantiableCursorAdapter) ((NullChoiceAdapter)
+                    playerDeck.getAdapter()).getAdapter()).getPositionForItem(game.deck), false);
+            playerIdentity.setEnabled(false);
+        }
         playerIdentity.setSelection(((StringableAdapter) playerIdentity.getAdapter())
                 .getPositionForItem(game.playerIdentity), false);
         playerAgenda.setProgress(game.playerAgendaScore);
@@ -242,32 +252,43 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
         disableUpdates = false;
     }
 
+    private void updateDecks() {
+        Log.i(getClass().getSimpleName(), "Updating deck adapter");
+        Cursor decks = converter.findAll(Deck.class, "name");
+        NullChoiceAdapter playerDeckAdapter = new NullChoiceAdapter(getApplicationContext(),
+                new InstantiableCursorAdapter<Deck>(getApplicationContext(), decks,
+                        android.R.layout.simple_list_item_1, converter, Deck.class,
+                        new InstantiableCursorAdapter.ViewRenderer<Deck>() {
+                            @Override
+                            public void populateView(Context context, View view, Deck instance, Cursor cursor) {
+                                if (instance == null) {
+                                    ((TextView) view.findViewById(android.R.id.text1)).setText("");
+                                } else {
+                                    ((TextView) view.findViewById(android.R.id.text1)).setText(instance.name);
+                                }
+                            }
+                        }
+                )
+        );
+        playerDeck.setAdapter(playerDeckAdapter);
+        if(game.deck != null) {
+            playerDeck.setSelection(((InstantiableCursorAdapter) playerDeckAdapter.getAdapter())
+                    .getPositionForItem(game.deck), false);
+        }
+    }
+
     private void updateIdentities(boolean isChecked) {
         int playerPos = playerIdentity.getSelectedItemPosition();
         int opponentPos = opponentIdentity.getSelectedItemPosition();
         Role playerRole = isChecked ? Role.CORPORATION : Role.RUNNER;
         Role opponentRole = !isChecked ? Role.CORPORATION : Role.RUNNER;
-        Cursor decks = converter.findAll(Deck.class, "name");
-        playerDeck.setAdapter(new NullChoiceAdapter(getApplicationContext(),
-                new InstantiableCursorAdapter<Deck>(getApplicationContext(), decks,
-                    android.R.layout.simple_list_item_1, converter, Deck.class,
-                    new InstantiableCursorAdapter.ViewRenderer<Deck>() {
-                        @Override
-                        public void populateView(Context context, View view, Deck instance, Cursor cursor) {
-                            if(instance == null) {
-                                ((TextView) view.findViewById(android.R.id.text1)).setText("");
-                            }
-                            else {
-                                ((TextView) view.findViewById(android.R.id.text1)).setText(instance.name);
-                            }
-                        }
-                    })
-                ));
         playerIdentity.setAdapter(new StringableAdapter(this, Identity.getIdentities(playerRole),
                 shortTitles));
         opponentIdentity.setAdapter(new StringableAdapter(this,
                 Identity.getIdentities(opponentRole), shortTitles));
         if(!disableUpdates) {
+            Log.i(getClass().getSimpleName(), "Updating UI");
+            playerDeck.setSelection(0, false);
             playerIdentity.setSelection(opponentPos, false);
             opponentIdentity.setSelection(playerPos, false);
             game.playerIdentity = (Identity) playerIdentity.getSelectedItem();
@@ -314,7 +335,20 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                 }
             }
         } else if (adapterView.equals(playerDeck)) {
-            // TODO
+            game.deck = (Deck) playerDeck.getItemAtPosition(i);
+            if(game.deck == null) {
+                playerIdentity.setEnabled(true);
+            }
+            else {
+                disableUpdates = true;
+                updateIdentities(game.deck.identity.faction.role == Role.CORPORATION);
+                playerIdentity.setSelection(((StringableAdapter) playerIdentity.getAdapter())
+                        .getPositionForItem(game.deck.identity));
+                game.playerIdentity = game.deck.identity;
+                playerIdentity.setEnabled(false);
+                playerRole.setChecked(game.deck.identity.faction.role == Role.CORPORATION);
+                disableUpdates = false;
+            }
         }
     }
 

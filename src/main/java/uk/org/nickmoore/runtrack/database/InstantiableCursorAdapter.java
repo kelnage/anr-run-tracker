@@ -52,6 +52,11 @@ public class InstantiableCursorAdapter<T extends Instantiable> extends CursorAda
     }
 
     @Override
+    public Object getItem(int position) {
+        return converter.readCursor(clazz, (Cursor) super.getItem(position));
+    }
+
+    @Override
     public void bindView(View view, Context context, Cursor cursor) {
         T instance = converter.readCursor(clazz, cursor);
         // Log.d(getClass().getSimpleName(), instance.toString());
@@ -61,5 +66,21 @@ public class InstantiableCursorAdapter<T extends Instantiable> extends CursorAda
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
         return LayoutInflater.from(context).inflate(this.view, viewGroup, false);
+    }
+
+    public int getPositionForItem(T needle) {
+        Log.i(getClass().getSimpleName(), "searching for " + needle.toString());
+        Cursor cursor = getCursor();
+        cursor.moveToFirst();
+        int index = 1;
+        do {
+            if(cursor.getLong(cursor.getColumnIndex("_id")) == needle.getId()) {
+                Log.i(getClass().getSimpleName(), "found " + needle.toString() + " at " + Integer.toString(index));
+                return index;
+            }
+            index++;
+        } while(cursor.move(1));
+        Log.i(getClass().getSimpleName(), "could not find " + needle.toString());
+        return -1;
     }
 }

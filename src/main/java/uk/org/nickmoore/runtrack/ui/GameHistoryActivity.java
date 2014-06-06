@@ -43,6 +43,7 @@ import uk.org.nickmoore.runtrack.database.NoSuchInstanceException;
 import uk.org.nickmoore.runtrack.database.SQLiteClassConverter;
 import uk.org.nickmoore.runtrack.database.UninstantiatedException;
 import uk.org.nickmoore.runtrack.database.UnmanageableClassException;
+import uk.org.nickmoore.runtrack.model.Deck;
 import uk.org.nickmoore.runtrack.model.Game;
 import uk.org.nickmoore.runtrack.model.Match;
 import uk.org.nickmoore.runtrack.model.Opponent;
@@ -70,7 +71,8 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
                 "Game.match IS NULL OR Game.match = 0 OR Game._id = First_Match_firstGame",
                 null, "Game.date DESC, Game.match ASC", "10",
                 new SQLiteClassConverter.Join(Opponent.class, "opponent"),
-                new SQLiteClassConverter.Join(Match.class, "match", "LEFT JOIN"));
+                new SQLiteClassConverter.Join(Match.class, "match", "LEFT JOIN"),
+                new SQLiteClassConverter.Join(Deck.class, "deck", "LEFT JOIN"));
         adapter = new InstantiableCursorAdapter<Game>(getApplicationContext(), recentGames,
                 R.layout.game_menu, converter, Game.class,
                 new InstantiableCursorAdapter.ViewRenderer<Game>() {

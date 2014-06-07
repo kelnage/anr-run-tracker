@@ -120,5 +120,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="game_type">Type</string>
     <string name="casual">Casual</string>
     <string name="competitive">Competitive</string>
-
+    <string name="sort">Sort</string>
+    <string name="order_by">Order By</string>
+    <string name="sort_date">Date</string>
+    <string name="sort_opponent">Opponent</string>
 </resources>

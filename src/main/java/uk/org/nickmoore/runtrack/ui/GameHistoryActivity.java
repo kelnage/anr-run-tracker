@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import uk.org.nickmoore.runtrack.R;
 import uk.org.nickmoore.runtrack.database.DatabaseManager;
+import uk.org.nickmoore.runtrack.database.DateDividedCursorAdapter;
 import uk.org.nickmoore.runtrack.database.InstantiableCursorAdapter;
 import uk.org.nickmoore.runtrack.database.NoSuchInstanceException;
 import uk.org.nickmoore.runtrack.database.SQLiteClassConverter;
@@ -71,7 +72,7 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
                 null, "Game.date DESC, Game.match ASC", "10",
                 new SQLiteClassConverter.Join(Opponent.class, "opponent"),
                 new SQLiteClassConverter.Join(Match.class, "match", "LEFT JOIN"));
-        adapter = new InstantiableCursorAdapter<Game>(getApplicationContext(), recentGames,
+        adapter = new DateDividedCursorAdapter<Game>(getApplicationContext(), recentGames,
                 R.layout.game_menu, converter, Game.class,
                 new InstantiableCursorAdapter.ViewRenderer<Game>() {
                     @Override
@@ -139,7 +140,7 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
                         ((TextView) view.findViewById(R.id.opponent_identity))
                                 .setText(opponent);
                     }
-                });
+                }, "date");
         deleteDialog = new AlertDialog.Builder(this)
                 .setPositiveButton(R.string.ok, this)
                 .setNegativeButton(R.string.cancel, this)

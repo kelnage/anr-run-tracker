@@ -77,7 +77,7 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
     private Game game;
     private boolean shortTitles;
     private LinkedHashMap<Integer, GroupedQueries> groupingOptions;
-    private Integer selectedGrouping = R.string.sort_date;
+    private Integer selectedGrouping;
 
     {
         groupingOptions = new LinkedHashMap<Integer, GroupedQueries>();
@@ -103,6 +103,10 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
     @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState == null) {
+            savedInstanceState = new Bundle();
+        }
+        selectedGrouping = savedInstanceState.getInt("grouping", R.string.sort_date);
         Display display = getWindowManager().getDefaultDisplay();
         shortTitles = display.getWidth() <= 320;
         converter = new SQLiteClassConverter(
@@ -324,6 +328,16 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
         }
         game = null;
         dialogInterface.dismiss();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("grouping", selectedGrouping);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        selectedGrouping = state.getInt("grouping", R.string.sort_date);
     }
 
     @Override

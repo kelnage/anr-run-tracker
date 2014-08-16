@@ -10,5 +10,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
-        android:id="@android:id/text1" />
+        android:id="@android:id/text1"
+        android:background="@android:color/background_light"
+        android:textColor="@android:color/primary_text_light" />
 </LinearLayout>

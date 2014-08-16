@@ -99,4 +99,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="nasir_meidan_short">Nasir</string>
     <string name="leela_patel">Leela Patel</string>
     <string name="leela_patel_short">Leela</string>
+    <string name="gagarin">Gagarin Deep Space</string>
+    <string name="gagarin_short">Gagarin DS</string>
+    <string name="near_earth_hub">Near-Earth Hub</string>
+    <string name="near_earth_hub_short">NE Hub</string>
+    <string name="edward_kim">Edward Kim</string>
+    <string name="edward_kim_short">Kim</string>
 </resources>

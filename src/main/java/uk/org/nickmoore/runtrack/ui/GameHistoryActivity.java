@@ -26,18 +26,26 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Display;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.LinkedHashMap;
+
 import uk.org.nickmoore.runtrack.R;
 import uk.org.nickmoore.runtrack.database.DatabaseManager;
+import uk.org.nickmoore.runtrack.database.DividedCursorAdapter;
 import uk.org.nickmoore.runtrack.database.InstantiableCursorAdapter;
 import uk.org.nickmoore.runtrack.database.NoSuchInstanceException;
 import uk.org.nickmoore.runtrack.database.SQLiteClassConverter;
@@ -52,6 +60,16 @@ import uk.org.nickmoore.runtrack.model.Opponent;
  * The activity that displays a list of games and matches.
  */
 public class GameHistoryActivity extends ListActivity implements DialogInterface.OnClickListener {
+    protected class GroupedQueries {
+        protected String groupClause;
+        protected DividedCursorAdapter.GroupingFunction grouper;
+
+        public GroupedQueries(String groupClause, DividedCursorAdapter.GroupingFunction grouper) {
+            this.groupClause = groupClause;
+            this.grouper = grouper;
+        }
+    }
+
     public final static int VIEW_GAME = 1;
     private SQLiteClassConverter converter;
     private Cursor recentGames;
@@ -59,21 +77,69 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
     private AlertDialog deleteDialog;
     private Game game;
     private boolean shortTitles;
+    private LinkedHashMap<Integer, GroupedQueries> groupingOptions;
+    private Integer selectedGrouping;
+
+    {
+        groupingOptions = new LinkedHashMap<Integer, GroupedQueries>();
+        groupingOptions.put(R.string.sort_date, new GroupedQueries(
+                "Game.date DESC, Game.match ASC",
+                new DividedCursorAdapter.GroupingFunction() {
+            @Override
+            public String group(Cursor cursor) {
+                return DateFormat.getDateInstance().format(
+                        new Date(cursor.getLong(cursor.getColumnIndex("date")) * 1000l));
+            }
+        }));
+        groupingOptions.put(R.string.sort_opponent, new GroupedQueries(
+                "Opponent_name ASC, Game.date DESC, Game.match ASC",
+                new DividedCursorAdapter.GroupingFunction() {
+            @Override
+            public String group(Cursor cursor) {
+                return cursor.getString(cursor.getColumnIndex("Opponent_name"));
+            }
+        }));
+        /* groupingOptions.put(R.string.sort_identities, new GroupedQueries(
+                "Game.playerIdentity DESC, Game.date DESC, Game.match ASC",
+                new DividedCursorAdapter.GroupingFunction() {
+                    @Override
+                    public String group(Cursor cursor) {
+                        Game game = converter.readCursor(Game.class, cursor);
+                        return getString(game.playerIdentity.textId);
+                    }
+                })); */
+    }
 
     @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState == null) {
+            savedInstanceState = new Bundle();
+        }
+        selectedGrouping = savedInstanceState.getInt("grouping", R.string.sort_date);
         Display display = getWindowManager().getDefaultDisplay();
         shortTitles = display.getWidth() <= 320;
         converter = new SQLiteClassConverter(
                 new DatabaseManager(getApplicationContext()).getWritableDatabase());
+        loadQuery();
+        deleteDialog = new AlertDialog.Builder(this)
+                .setPositiveButton(R.string.ok, this)
+                .setNegativeButton(R.string.cancel, this)
+                .create();
+        setListAdapter(adapter);
+        registerForContextMenu(getListView());
+    }
+
+    private void loadQuery() {
         recentGames = converter.findAll(Game.class,
                 "Game.match IS NULL OR Game.match = 0 OR Game._id = First_Match_firstGame",
-                null, "Game.date DESC, Game.match ASC", "10",
+                null, groupingOptions.get(selectedGrouping).groupClause, "10",
                 new SQLiteClassConverter.Join(Opponent.class, "opponent"),
                 new SQLiteClassConverter.Join(Match.class, "match", "LEFT JOIN"),
                 new SQLiteClassConverter.Join(Deck.class, "deck", "LEFT JOIN"));
-        adapter = new InstantiableCursorAdapter<Game>(getApplicationContext(), recentGames,
+        // adapter = new InstantiableCursorAdapter<Game>(getApplicationContext(), recentGames,
+        //        new SQLiteClassConverter.Join(Match.class, "match", "LEFT JOIN"));
+        adapter = new DividedCursorAdapter<Game>(getApplicationContext(), recentGames,
                 R.layout.game_menu, converter, Game.class,
                 new InstantiableCursorAdapter.ViewRenderer<Game>() {
                     @Override
@@ -81,7 +147,7 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
                                              Cursor cursor) {
                         Match match = null;
                         Game secondGame = null;
-                        if(game.match != null && game.match.getId() != 0) {
+                        if (game.match != null && game.match.getId() != 0) {
                             view.findViewById(R.id.second_game).setVisibility(View.VISIBLE);
                             try {
                                 converter.retrieve(game.match.secondGame);
@@ -94,8 +160,7 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
                             match = game.match;
                             match.firstGame = game;
                             match.instantiate();
-                        }
-                        else {
+                        } else {
                             // we won't have a second game, so hide it
                             view.findViewById(R.id.second_game).setVisibility(View.GONE);
                         }
@@ -114,12 +179,12 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
                         String opponent = String.format(getString(R.string.a_bracket_b),
                                 game.opponentIdentity.toCharSequence(context, shortTitles),
                                 game.opponentAgendaScore);
-                        if(secondGame != null) {
+                        if (secondGame != null) {
                             try {
                                 result = String.format(getString(R.string.match_short_title),
                                         match.getPlayerResult().toCharSequence(context, false),
                                         game.opponent.name);
-                            } catch(UninstantiatedException ex) {
+                            } catch (UninstantiatedException ex) {
                                 Log.i(getClass().getSimpleName(), match.toString());
                                 Log.e(getClass().getSimpleName(), ex.toString());
                             }
@@ -127,12 +192,16 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
                                     String.format(getString(R.string.a_bracket_b),
                                             secondGame.playerIdentity.toCharSequence(context,
                                                     shortTitles),
-                                            secondGame.playerAgendaScore));
+                                            secondGame.playerAgendaScore
+                                    )
+                            );
                             ((TextView) view.findViewById(R.id.opponent_identity2)).setText(
                                     String.format(getString(R.string.a_bracket_b),
                                             secondGame.opponentIdentity.toCharSequence(context,
                                                     shortTitles),
-                                            secondGame.opponentAgendaScore));
+                                            secondGame.opponentAgendaScore
+                                    )
+                            );
                         }
                         ((TextView) view.findViewById(R.id.opponent_name))
                                 .setText(result);
@@ -141,39 +210,35 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
                         ((TextView) view.findViewById(R.id.opponent_identity))
                                 .setText(opponent);
                     }
-                });
-        deleteDialog = new AlertDialog.Builder(this)
-                .setPositiveButton(R.string.ok, this)
-                .setNegativeButton(R.string.cancel, this)
-                .create();
-        setListAdapter(adapter);
-        registerForContextMenu(getListView());
+                }, groupingOptions.get(selectedGrouping).grouper);
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), GameActivity.class);
-        recentGames.moveToPosition(position);
-        Game game = converter.readCursor(Game.class, recentGames);
-        if(game.match != null && game.match.getId() != 0) {
-            game.match.firstGame = game;
-            try {
-                converter.retrieve(game.match.secondGame);
-                converter.retrieve(game.match.opponent);
-            } catch (UnmanageableClassException e) {
-                Log.e(getClass().getSimpleName(), e.toString());
-            } catch (NoSuchInstanceException e) {
-                Log.e(getClass().getSimpleName(), e.toString());
+        Object item = adapter.getItem(position);
+        if (item instanceof Game) {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), GameActivity.class);
+            Game game = (Game) item;
+            if (game.match != null && game.match.getId() != 0) {
+                game.match.firstGame = game;
+                try {
+                    converter.retrieve(game.match.secondGame);
+                    converter.retrieve(game.match.opponent);
+                } catch (UnmanageableClassException e) {
+                    Log.e(getClass().getSimpleName(), e.toString());
+                } catch (NoSuchInstanceException e) {
+                    Log.e(getClass().getSimpleName(), e.toString());
+                }
+                game.match.setCurrentGame(game);
+                game.match.instantiate();
+                intent.putExtra("match", game.match);
+            } else {
+                intent.putExtra("game", game);
             }
-            game.match.setCurrentGame(game);
-            game.match.instantiate();
-            intent.putExtra("match", game.match);
+            startActivityForResult(intent, VIEW_GAME);
         }
-        else {
-            intent.putExtra("game", game);
-        }
-        startActivityForResult(intent, VIEW_GAME);
+        // TODO: hide the games from this grouping?
     }
 
     @SuppressWarnings("deprecation")
@@ -187,13 +252,45 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        int i = 1;
+        SubMenu sort = menu.addSubMenu(R.string.sort);
+        sort.setIcon(android.R.drawable.ic_menu_sort_alphabetically);
+        sort.setHeaderIcon(android.R.drawable.ic_menu_sort_alphabetically);
+        for(Integer groupingOption: groupingOptions.keySet()) {
+            MenuItem item = sort.add(1, groupingOption, i, groupingOption);
+            if(groupingOption.equals(selectedGrouping)) {
+                item.setChecked(true);
+            }
+            i++;
+        }
+        sort.setGroupCheckable(1, true, true);
+        MenuItemCompat.setShowAsAction(sort.getItem(), MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(groupingOptions.containsKey(item.getItemId())) {
+            selectedGrouping = item.getItemId();
+            item.setChecked(true);
+            loadQuery();
+            setListAdapter(adapter);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.equals(getListView())) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-            recentGames.moveToPosition(info.position);
-            game = converter.readCursor(Game.class, recentGames);
-            Log.v(getClass().getSimpleName(), game.toString());
-            getMenuInflater().inflate(R.menu.long_delete, menu);
+            Object item = adapter.getItem(info.position);
+            if (item instanceof Game) {
+                game = (Game) item;
+                Log.v(getClass().getSimpleName(), game.toString());
+                getMenuInflater().inflate(R.menu.game_long, menu);
+            }
         }
         super.onCreateContextMenu(menu, v, menuInfo);
     }
@@ -224,7 +321,7 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
             switch (whichButton) {
                 case DialogInterface.BUTTON_POSITIVE:
                     try {
-                        if(game.match != null && game.match.getId() != 0) {
+                        if (game.match != null && game.match.getId() != 0) {
                             converter.delete(game.match.secondGame);
                             converter.delete(game.match);
                         }
@@ -242,6 +339,16 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
         }
         game = null;
         dialogInterface.dismiss();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("grouping", selectedGrouping);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        selectedGrouping = state.getInt("grouping", R.string.sort_date);
     }
 
     @Override

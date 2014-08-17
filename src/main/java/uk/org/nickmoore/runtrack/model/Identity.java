@@ -21,6 +21,8 @@ package uk.org.nickmoore.runtrack.model;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+
 import uk.org.nickmoore.runtrack.R;
 
 /**
@@ -68,7 +70,13 @@ public enum Identity implements Stringable {
     SELECTIVE_JINTEKI(R.string.selective_mind_mapping, R.string.selective_mind_mapping_short,
             Faction.JINTEKI),
     SELECTIVE_HB(R.string.selective_mind_mapping, R.string.selective_mind_mapping_short,
-            Faction.HAAS_BIOROID);
+            Faction.HAAS_BIOROID),
+    BLUE_SUN(R.string.blue_sun, Faction.WEYLAND),
+    NASIR_MEIDAN(R.string.nasir_meidan, R.string.nasir_meidan_short, Faction.SHAPER),
+    LEELA_PATEL(R.string.leela_patel, R.string.leela_patel_short, Faction.CRIMINAL),
+    GAGARIN(R.string.gagarin, R.string.gagarin_short, Faction.WEYLAND),
+    NEAR_EARTH_HUB(R.string.near_earth_hub, R.string.near_earth_hub_short, Faction.NBN),
+    EDWARD_KIM(R.string.edward_kim, R.string.edward_kim_short, Faction.ANARCH);
 
     public final int textId;
     public final int shortTextId;
@@ -95,43 +103,23 @@ public enum Identity implements Stringable {
     }
 
     public static Identity[] getIdentities(Faction faction) {
-        switch (faction) {
-            case ANARCH:
-                return new Identity[]{NOISE, WHIZZARD, REINA_ROJA};
-            case CRIMINAL:
-                return new Identity[]{GABRIEL_SANTIAGO, ANDROMEDA, LARAMY_FISK, IAIN, KEN_TENMA,
-                        SILHOUETTE};
-            case SHAPER:
-                return new Identity[]{KATE_MAC_MACCAFFREY, CHAOS_THEORY, KIT, THE_PROFESSOR,
-                        EXILE, THE_COLLECTIVE};
-            case HAAS_BIOROID:
-                return new Identity[]{ENGINEERING_THE_FUTURE, STRONGER_TOGETHER, NEXT_DESIGN,
-                        CUSTOM_BIOTICS, CEREBRAL_IMAGING, SELECTIVE_HB};
-            case JINTEKI:
-                return new Identity[]{PERSONAL_EVOLUTION, REPLICATING_PERFECTION, HARMONY_MEDTECH,
-                        NISEI_DIVISION, TENNIN_INSTITUTE, SELECTIVE_JINTEKI};
-            case NBN:
-                return new Identity[]{MAKING_NEWS, THE_WORLD_IS_YOURS};
-            case WEYLAND:
-                return new Identity[]{BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT, GRNDL};
+        ArrayList<Identity> idents = new ArrayList<Identity>();
+        for(Identity ident: Identity.values()) {
+            if(ident.faction == faction) {
+                idents.add(ident);
+            }
         }
-        return Identity.values();
+        return idents.toArray(new Identity[idents.size()]);
     }
 
     public static Identity[] getIdentities(Role role) {
-        switch (role) {
-            case RUNNER:
-                return new Identity[]{NOISE, WHIZZARD, REINA_ROJA, GABRIEL_SANTIAGO, ANDROMEDA,
-                        LARAMY_FISK, KATE_MAC_MACCAFFREY, CHAOS_THEORY, KIT, THE_PROFESSOR, EXILE,
-                        THE_COLLECTIVE, IAIN, KEN_TENMA, SILHOUETTE};
-            case CORPORATION:
-                return new Identity[]{ENGINEERING_THE_FUTURE, STRONGER_TOGETHER, NEXT_DESIGN,
-                        CUSTOM_BIOTICS, CEREBRAL_IMAGING, PERSONAL_EVOLUTION,
-                        REPLICATING_PERFECTION, MAKING_NEWS, THE_WORLD_IS_YOURS,
-                        BUILDING_A_BETTER_WORLD, BECAUSE_WE_BUILT_IT, GRNDL, HARMONY_MEDTECH,
-                        NISEI_DIVISION, TENNIN_INSTITUTE, SELECTIVE_JINTEKI, SELECTIVE_HB};
+        ArrayList<Identity> idents = new ArrayList<Identity>();
+        for(Identity ident: Identity.values()) {
+            if(ident.faction.role == role) {
+                idents.add(ident);
+            }
         }
-        return Identity.values();
+        return idents.toArray(new Identity[idents.size()]);
     }
 
     public static Identity[] getIdentities() {

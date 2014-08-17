@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 Copyright (C) 2013 Nick Moore
 
 This file is part of ANR Run Tracker
@@ -119,6 +120,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="game_type">Type</string>
     <string name="casual">Casual</string>
     <string name="competitive">Competitive</string>
+    <string name="sort">Sort</string>
+    <string name="order_by">Order By</string>
+    <string name="sort_date">Date</string>
+    <string name="sort_opponent">Opponent</string>
+    <string name="sort_identities">Identities</string>
     <string name="deck_management">Your Decks</string>
     <string name="deck">Deck</string>
     <string name="add_deck">Add a deck</string>
@@ -128,5 +134,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="deck_activity_label">%s A Deck</string>
     <string name="delete_deck_title">Delete Deck %s?</string>
     <string name="delete_deck">Are you sure you wish to delete the deck %s? Your games with this deck will not be deleted.</string>
-
 </resources>

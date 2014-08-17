@@ -38,7 +38,7 @@ import uk.org.nickmoore.runtrack.model.Role;
  */
 public class DatabaseManager extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "NetrunnerTracker";
-    public static final int DATABASE_VERSION = 11;
+    public static final int DATABASE_VERSION = 12;
     public static final Class[] DATABASE_ENUMS = {Faction.class, GameEnd.class, Identity.class,
             Role.class};
 
@@ -62,6 +62,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         converter.createTable(Opponent.class);
         converter.createTable(Game.class);
         converter.createTable(Match.class);
+        converter.createTable(Deck.class);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -158,7 +159,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             Log.i(getClass().getSimpleName(), sql);
             sqLiteDatabase.execSQL(sql);
         }
-        if(newVersion >= 11 && oldVersion < 11) {
+        if(newVersion >= 12 && oldVersion < 12) {
             converter.createTable(Deck.class);
         }
         for (Class clazz : DATABASE_ENUMS) {

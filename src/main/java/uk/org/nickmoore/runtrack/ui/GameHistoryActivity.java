@@ -137,8 +137,6 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
                 new SQLiteClassConverter.Join(Opponent.class, "opponent"),
                 new SQLiteClassConverter.Join(Match.class, "match", "LEFT JOIN"),
                 new SQLiteClassConverter.Join(Deck.class, "deck", "LEFT JOIN"));
-        // adapter = new InstantiableCursorAdapter<Game>(getApplicationContext(), recentGames,
-        //        new SQLiteClassConverter.Join(Match.class, "match", "LEFT JOIN"));
         adapter = new DividedCursorAdapter<Game>(getApplicationContext(), recentGames,
                 R.layout.game_menu, converter, Game.class,
                 new InstantiableCursorAdapter.ViewRenderer<Game>() {
@@ -289,7 +287,7 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
             if (item instanceof Game) {
                 game = (Game) item;
                 Log.v(getClass().getSimpleName(), game.toString());
-                getMenuInflater().inflate(R.menu.game_long, menu);
+                getMenuInflater().inflate(R.menu.long_delete, menu);
             }
         }
         super.onCreateContextMenu(menu, v, menuInfo);

@@ -124,4 +124,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="order_by">Order By</string>
     <string name="sort_date">Date</string>
     <string name="sort_opponent">Opponent</string>
+    <string name="sort_identities">Identities</string>
 </resources>

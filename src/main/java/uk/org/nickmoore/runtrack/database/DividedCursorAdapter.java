@@ -54,6 +54,9 @@ public class DividedCursorAdapter<T extends Instantiable> extends InstantiableCu
 
     private void loadPositions() {
         Cursor cursor = getCursor();
+        if(cursor.getCount() == 0) {
+            return;
+        }
         cursor.moveToFirst();
         int position = 0;
         int cursorPosition = 0;

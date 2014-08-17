@@ -98,6 +98,15 @@ public class GameHistoryActivity extends ListActivity implements DialogInterface
                 return cursor.getString(cursor.getColumnIndex("Opponent_name"));
             }
         }));
+        /* groupingOptions.put(R.string.sort_identities, new GroupedQueries(
+                "Game.playerIdentity DESC, Game.date DESC, Game.match ASC",
+                new DividedCursorAdapter.GroupingFunction() {
+                    @Override
+                    public String group(Cursor cursor) {
+                        Game game = converter.readCursor(Game.class, cursor);
+                        return getString(game.playerIdentity.textId);
+                    }
+                })); */
     }
 
     @SuppressWarnings("deprecation")

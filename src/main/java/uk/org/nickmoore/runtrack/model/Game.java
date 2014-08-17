@@ -123,10 +123,10 @@ public class Game extends Instantiable implements Serializable {
     @Override
     public String toString() {
         if (isInstantiated()) {
-            return String.format("ID: %d, Player Identity: %s, Player Score: %d" +
+            return String.format("ID: %d, Player Identity: %s, Player Deck: %s, Player Score: %d" +
                     "\nOpponent: %s, Opponent Identity: %s, Opponent Score: %d," +
                     " Game End: %s, Notes: %s\nMatch: %s",
-                    getId(), playerIdentity.name(), playerAgendaScore,
+                    getId(), playerIdentity.name(), String.valueOf(deck), playerAgendaScore,
                     opponent.toString(), opponentIdentity.name(),
                     opponentAgendaScore, gameEnd.name(), notes, String.valueOf(match));
         }

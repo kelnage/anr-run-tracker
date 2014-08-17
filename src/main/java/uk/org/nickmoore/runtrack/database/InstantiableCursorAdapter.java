@@ -71,6 +71,9 @@ public class InstantiableCursorAdapter<T extends Instantiable> extends CursorAda
     public int getPositionForItem(T needle) {
         Log.i(getClass().getSimpleName(), "searching for " + needle.toString());
         Cursor cursor = getCursor();
+        if(cursor.getCount() == 0) {
+            return -1;
+        }
         cursor.moveToFirst();
         int index = 1;
         do {

@@ -47,4 +47,12 @@ public class Deck extends Instantiable implements Serializable {
         }
         return Long.toString(getId());
     }
+
+    @Override
+    public String toString() {
+        if (isInstantiated()) {
+            return name;
+        }
+        return String.format("ID: %d", getId());
+    }
 }

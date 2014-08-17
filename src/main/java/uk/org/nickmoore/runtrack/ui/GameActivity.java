@@ -198,6 +198,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
     }
 
     private void loadGame() {
+        Log.i(getClass().getSimpleName(), String.valueOf(game));
         if(match == null) {
             setTitle(getString(R.string.game_activity_label,
                     game.getId() == 0 ? "Create" : "Edit"));
@@ -213,7 +214,7 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
         gameType.setChecked(game.type);
         updateDecks();
         updateIdentities(playerRole.isChecked());
-        if(game.deck != null) {
+        if(game.deck != null && game.deck.getId() != 0) {
             playerDeck.setSelection(((InstantiableCursorAdapter) ((NullChoiceAdapter)
                     playerDeck.getAdapter()).getAdapter()).getPositionForItem(game.deck), false);
             playerIdentity.setEnabled(false);

@@ -196,13 +196,6 @@ public class BackupActivity extends Activity implements View.OnClickListener {
                     Toast.LENGTH_LONG).show();
             return;
         }
-        if(backupVersion < DatabaseManager.DATABASE_VERSION) {
-            SQLiteDatabase database = SQLiteDatabase.openDatabase(backupDatabase.getPath(), null,
-                    SQLiteDatabase.OPEN_READWRITE);
-            DatabaseManager dm = new DatabaseManager(this);
-            dm.onUpgrade(database, backupVersion, DatabaseManager.DATABASE_VERSION);
-            database.close();
-        }
         copyFile(backupDatabase, currentDatabase);
         Toast.makeText(this, R.string.restore_success, Toast.LENGTH_LONG).show();
     }

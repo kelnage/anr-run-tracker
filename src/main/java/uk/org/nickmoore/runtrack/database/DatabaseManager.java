@@ -69,6 +69,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         SQLiteClassConverter converter = new SQLiteClassConverter(sqLiteDatabase);
+        Log.i(getClass().getSimpleName(), String.format("Upgrading database from %d to %d", oldVersion, newVersion));
         if (newVersion >= 2 && oldVersion < 2) {
             for (Class clazz : DATABASE_ENUMS) {
                 try {
@@ -161,6 +162,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
         if(newVersion >= 12 && oldVersion < 12) {
             converter.createTable(Deck.class);
+            String sql = String.format("ALTER TABLE %s ADD COLUMN deck INTEGER DEFAULT NULL",
+                    Game.class.getSimpleName());
+            Log.i(getClass().getSimpleName(), sql);
+            sqLiteDatabase.execSQL(sql);
         }
         for (Class clazz : DATABASE_ENUMS) {
             try {

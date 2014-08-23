@@ -64,6 +64,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     android:id="@+id/identity"
                     android:spinnerMode="dropdown" />
             </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/notes"
+                    android:id="@+id/textView11"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_span="2" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:ems="10"
+                    android:id="@+id/notes"
+                    android:layout_span="2" />
+            </TableRow>
         </TableLayout>
     </ScrollView>
 

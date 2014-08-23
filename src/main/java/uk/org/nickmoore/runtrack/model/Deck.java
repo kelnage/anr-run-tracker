@@ -31,6 +31,7 @@ import uk.org.nickmoore.runtrack.database.Instantiable;
 public class Deck extends Instantiable implements Serializable {
     public String name = "";
     public Identity identity = Identity.NOISE;
+    public String notes = "";
 
     public Deck() {
         setId(0);

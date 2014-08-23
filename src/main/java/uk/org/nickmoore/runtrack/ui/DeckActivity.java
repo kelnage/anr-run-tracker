@@ -46,6 +46,7 @@ public class DeckActivity extends Activity implements Button.OnClickListener,
     private Button cancel;
     private Button confirm;
     private EditText deckName;
+    private EditText notes;
     private Spinner identity;
     private SQLiteClassConverter converter;
 
@@ -62,6 +63,8 @@ public class DeckActivity extends Activity implements Button.OnClickListener,
         confirm.setOnClickListener(this);
         deckName = (EditText) findViewById(R.id.deck_name);
         deckName.setOnFocusChangeListener(this);
+        notes = (EditText) findViewById(R.id.notes);
+        notes.setOnFocusChangeListener(this);
         identity = (Spinner) findViewById(R.id.identity);
         identity.setOnItemSelectedListener(this);
         identity.setAdapter(new StringableAdapter(getApplicationContext(), Identity.getIdentities(),
@@ -95,6 +98,7 @@ public class DeckActivity extends Activity implements Button.OnClickListener,
         identity.setSelection(
                 ((StringableAdapter) identity.getAdapter()).getPositionForItem(deck.identity),
                 false);
+        notes.setText(deck.notes);
         disableUpdates = false;
     }
 
@@ -112,6 +116,7 @@ public class DeckActivity extends Activity implements Button.OnClickListener,
         }
         if(view.equals(confirm)) {
             updateDeckName();
+            updateNotes();
             try {
                 converter.store(deck);
                 finish();
@@ -130,11 +135,23 @@ public class DeckActivity extends Activity implements Button.OnClickListener,
         }
     }
 
+    private void updateNotes() {
+        if(notes.getText() != null) {
+            deck.notes = notes.getText().toString();
+        }
+        else {
+            deck.notes = "";
+        }
+    }
+
     @Override
     public void onFocusChange(View view, boolean b) {
         if(disableUpdates) return;
         if(view.equals(deckName)) {
             updateDeckName();
+        }
+        if(view.equals(notes)) {
+            updateNotes();
         }
     }
 

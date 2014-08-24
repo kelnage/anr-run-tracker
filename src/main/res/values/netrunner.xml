@@ -105,4 +105,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="near_earth_hub_short">NE Hub</string>
     <string name="edward_kim">Edward Kim</string>
     <string name="edward_kim_short">Kim</string>
+    <string name="foundry">The Foundry</string>
+    <string name="foundry_short">Foundry</string>
 </resources>

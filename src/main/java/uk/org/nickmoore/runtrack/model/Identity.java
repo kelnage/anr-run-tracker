@@ -76,7 +76,8 @@ public enum Identity implements Stringable {
     LEELA_PATEL(R.string.leela_patel, R.string.leela_patel_short, Faction.CRIMINAL),
     GAGARIN(R.string.gagarin, R.string.gagarin_short, Faction.WEYLAND),
     NEAR_EARTH_HUB(R.string.near_earth_hub, R.string.near_earth_hub_short, Faction.NBN),
-    EDWARD_KIM(R.string.edward_kim, R.string.edward_kim_short, Faction.ANARCH);
+    EDWARD_KIM(R.string.edward_kim, R.string.edward_kim_short, Faction.ANARCH),
+    THE_FOUNDRY(R.string.foundry, R.string.foundry_short, Faction.HAAS_BIOROID);
 
     public final int textId;
     public final int shortTextId;

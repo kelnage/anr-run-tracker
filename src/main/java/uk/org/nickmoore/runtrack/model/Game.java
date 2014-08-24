@@ -122,10 +122,10 @@ public class Game extends Instantiable implements Serializable {
         if (isInstantiated()) {
             return String.format("ID: %d, Player Identity: %s, Player Score: %d" +
                     "\nOpponent: %s, Opponent Identity: %s, Opponent Score: %d," +
-                    " Game End: %s, Notes: %s\nMatch: %s",
+                    " Game End: %s, Notes: %s\nMatch: %d",
                     getId(), playerIdentity.name(), playerAgendaScore,
                     opponent.toString(), opponentIdentity.name(),
-                    opponentAgendaScore, gameEnd.name(), notes, String.valueOf(match));
+                    opponentAgendaScore, gameEnd.name(), notes, match == null ? 0 : match.getId());
         }
         return String.format("ID: %d", getId());
     }

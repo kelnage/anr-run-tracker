@@ -22,10 +22,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.android.tools.build:gradle:1.0.0'
     }
 }
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 repositories {
     mavenCentral()
@@ -35,19 +35,19 @@ repositories {
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         minSdkVersion 7
-        targetSdkVersion 19
+        targetSdkVersion 21
     }
 }
 
 dependencies {
-	compile 'com.android.support:support-v4:19.1.+'
-	compile 'com.android.support:appcompat-v7:19.1.+'
-    compile group: 'com.androidplot', name: 'androidplot-core', version: '0.6.1-SNAPSHOT'
+	compile 'com.android.support:support-v4:21.0.3'
+	compile 'com.android.support:appcompat-v7:21.0.3'
+    compile group: 'com.androidplot', name: 'androidplot-core', version: '0.6.1'
 }
 
 if(project.hasProperty("runtrack.signing")

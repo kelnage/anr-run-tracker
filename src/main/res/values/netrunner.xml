@@ -84,7 +84,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="iain_stirling">Iain Stirling</string>
     <string name="iain_stirling_short">Iain S</string>
     <string name="ken_express_tenma">Ken \"Express\" Tenma</string>
-    <string name="ken_express_tenma_short">Express</string>
+    <string name="ken_express_tenma_short">Ken T</string>
     <string name="silhouette">Silhouette</string>
     <string name="harmony_medtech">Harmony Medtech</string>
     <string name="harmony_medtech_short">Harmony Med</string>
@@ -107,4 +107,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="edward_kim_short">Kim</string>
     <string name="foundry">The Foundry</string>
     <string name="foundry_short">Foundry</string>
+    <string name="quetzal">Quetzal</string>
+    <string name="industrial_genomics">Industrial Genomics</string>
+    <string name="industrial_genomics_short">IG</string>
+    <string name="argus_security">Argus Security</string>
+    <string name="argus_security_short">Argus</string>
+    <string name="titan_transnational">Titan Transnational</string>
+    <string name="titan_transnational_short">Titan</string>
+    <string name="maxx">MaxX</string>
+    <string name="valencia_estevez">Valencia Estevez</string>
+    <string name="valencia_estevez_short">Val E.</string>
+    <string name="jinteki_biotech">Jinteki Biotech</string>
+    <string name="jinteki_biotech_short">Biotech</string>
+    <string name="hayley_kaplan">Hayley Kaplan</string>
+    <string name="hayley_kaplan_short">Hayley</string>
 </resources>

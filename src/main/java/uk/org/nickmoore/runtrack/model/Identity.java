@@ -77,7 +77,15 @@ public enum Identity implements Stringable {
     GAGARIN(R.string.gagarin, R.string.gagarin_short, Faction.WEYLAND),
     NEAR_EARTH_HUB(R.string.near_earth_hub, R.string.near_earth_hub_short, Faction.NBN),
     EDWARD_KIM(R.string.edward_kim, R.string.edward_kim_short, Faction.ANARCH),
-    THE_FOUNDRY(R.string.foundry, R.string.foundry_short, Faction.HAAS_BIOROID);
+    THE_FOUNDRY(R.string.foundry, R.string.foundry_short, Faction.HAAS_BIOROID),
+    QUETZAL(R.string.quetzal, Faction.ANARCH),
+    INDUSTRIAL_GENOMICS(R.string.industrial_genomics, R.string.industrial_genomics_short, Faction.JINTEKI),
+    ARGUS_SECURITY(R.string.argus_security, R.string.argus_security_short, Faction.WEYLAND),
+    TITAN_TRANSNATIONAL(R.string.titan_transnational, R.string.titan_transnational_short, Faction.WEYLAND),
+    MAXX(R.string.maxx, Faction.ANARCH),
+    VALENCIA_ESTEVEZ(R.string.valencia_estevez, R.string.valencia_estevez_short, Faction.ANARCH),
+    JINTEKI_BIOTECH(R.string.jinteki_biotech, R.string.jinteki_biotech_short, Faction.JINTEKI),
+    HAYLEY_KAPLAN(R.string.hayley_kaplan, R.string.hayley_kaplan_short, Faction.SHAPER);
 
     public final int textId;
     public final int shortTextId;

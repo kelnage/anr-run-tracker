@@ -50,7 +50,7 @@ import uk.org.nickmoore.runtrack.database.SQLiteClassConverter;
 import uk.org.nickmoore.runtrack.database.UnmanageableClassException;
 import uk.org.nickmoore.runtrack.model.Game;
 import uk.org.nickmoore.runtrack.model.GameEnd;
-import uk.org.nickmoore.runtrack.model.Identity;
+import uk.org.nickmoore.runtrack.model.IdentityEnum;
 import uk.org.nickmoore.runtrack.model.Match;
 import uk.org.nickmoore.runtrack.model.Opponent;
 import uk.org.nickmoore.runtrack.model.Role;
@@ -231,15 +231,15 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
         int opponentPos = opponentIdentity.getSelectedItemPosition();
         Role playerRole = isChecked ? Role.CORPORATION : Role.RUNNER;
         Role opponentRole = !isChecked ? Role.CORPORATION : Role.RUNNER;
-        playerIdentity.setAdapter(new StringableAdapter(this, Identity.getIdentities(playerRole),
+        playerIdentity.setAdapter(new StringableAdapter(this, IdentityEnum.getIdentities(playerRole),
                 shortTitles));
         opponentIdentity.setAdapter(new StringableAdapter(this,
-                Identity.getIdentities(opponentRole), shortTitles));
+                IdentityEnum.getIdentities(opponentRole), shortTitles));
         if(!disableUpdates) {
             playerIdentity.setSelection(opponentPos, false);
             opponentIdentity.setSelection(playerPos, false);
-            game.playerIdentity = (Identity) playerIdentity.getSelectedItem();
-            game.opponentIdentity = (Identity) opponentIdentity.getSelectedItem();
+            game.playerIdentity = (IdentityEnum) playerIdentity.getSelectedItem();
+            game.opponentIdentity = (IdentityEnum) opponentIdentity.getSelectedItem();
             if(game.playerAgendaScore != 0 || game.opponentAgendaScore != 0) {
                 new AlertDialog.Builder(this)
                     .setTitle(R.string.swap_scores)
@@ -268,9 +268,9 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (disableUpdates) return;
         if (adapterView.equals(playerIdentity)) {
-            game.playerIdentity = (Identity) playerIdentity.getItemAtPosition(i);
+            game.playerIdentity = (IdentityEnum) playerIdentity.getItemAtPosition(i);
         } else if (adapterView.equals(opponentIdentity)) {
-            game.opponentIdentity = (Identity) opponentIdentity.getItemAtPosition(i);
+            game.opponentIdentity = (IdentityEnum) opponentIdentity.getItemAtPosition(i);
         } else if (adapterView.equals(gameEnd)) {
             game.gameEnd = (GameEnd) gameEnd.getItemAtPosition(i);
             if(match != null) {
@@ -412,11 +412,11 @@ public class GameActivity extends FragmentActivity implements AdapterView.OnItem
                         if(match.secondGame.getId() == 0) {
                             if(match.firstGame.playerIdentity.faction.getRole() == Role.CORPORATION) {
                                 match.secondGame.playerIdentity =
-                                        Identity.getIdentities(Role.RUNNER)[0];
+                                        IdentityEnum.getIdentities(Role.RUNNER)[0];
                             }
                             else {
                                 match.secondGame.playerIdentity =
-                                        Identity.getIdentities(Role.CORPORATION)[0];
+                                        IdentityEnum.getIdentities(Role.CORPORATION)[0];
                             }
                         }
                         game = match.secondGame;

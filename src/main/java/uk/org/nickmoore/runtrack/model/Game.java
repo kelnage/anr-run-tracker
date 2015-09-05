@@ -39,9 +39,9 @@ import uk.org.nickmoore.runtrack.database.UninstantiatedException;
 public class Game extends Instantiable implements Serializable {
     @ForeignKey
     public Opponent opponent;
-    public Identity playerIdentity;
+    public IdentityEnum playerIdentity;
     public int playerAgendaScore;
-    public Identity opponentIdentity;
+    public IdentityEnum opponentIdentity;
     public int opponentAgendaScore;
     public GameEnd gameEnd;
     public String notes;
@@ -62,9 +62,9 @@ public class Game extends Instantiable implements Serializable {
 
     private void init() {
         opponent = new Opponent();
-        playerIdentity = Identity.NOISE;
+        playerIdentity = IdentityEnum.NOISE;
         playerAgendaScore = 0;
-        opponentIdentity = Identity.ENGINEERING_THE_FUTURE;
+        opponentIdentity = IdentityEnum.ENGINEERING_THE_FUTURE;
         opponentAgendaScore = 0;
         gameEnd = GameEnd.AGENDAS;
         notes = "";
@@ -187,7 +187,7 @@ public class Game extends Instantiable implements Serializable {
         } else if (pivotClass.equals(Faction.class)) {
             winSql = String.format(winSqlTemplate, "f._id");
             totalSql = String.format(totalSqlTemplate, "f._id");
-        } else if (pivotClass.equals(Identity.class)) {
+        } else if (pivotClass.equals(IdentityEnum.class)) {
             winSql = String.format(winSqlTemplate, "i._id");
             totalSql = String.format(totalSqlTemplate, "i._id");
         } else {

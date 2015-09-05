@@ -27,7 +27,7 @@ import android.util.Log;
 import uk.org.nickmoore.runtrack.model.Faction;
 import uk.org.nickmoore.runtrack.model.Game;
 import uk.org.nickmoore.runtrack.model.GameEnd;
-import uk.org.nickmoore.runtrack.model.Identity;
+import uk.org.nickmoore.runtrack.model.IdentityEnum;
 import uk.org.nickmoore.runtrack.model.Match;
 import uk.org.nickmoore.runtrack.model.Opponent;
 import uk.org.nickmoore.runtrack.model.Role;
@@ -38,7 +38,7 @@ import uk.org.nickmoore.runtrack.model.Role;
 public class DatabaseManager extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "NetrunnerTracker";
     public static final int DATABASE_VERSION = 14;
-    public static final Class[] DATABASE_ENUMS = {Faction.class, GameEnd.class, Identity.class,
+    public static final Class[] DATABASE_ENUMS = {Faction.class, GameEnd.class, IdentityEnum.class,
             Role.class};
 
     public DatabaseManager(Context context) {

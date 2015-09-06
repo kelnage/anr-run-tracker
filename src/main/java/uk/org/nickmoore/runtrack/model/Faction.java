@@ -29,13 +29,15 @@ import uk.org.nickmoore.runtrack.R;
  */
 @SuppressWarnings("WeakerAccess")
 public enum Faction implements Stringable {
-    ANARCH(R.string.anarch, R.string.anarch_short, Role.RUNNER, Color.argb(255, 225, 93, 49)),
+    ANARCH(R.string.anarch, R.string.anarch, Role.RUNNER, Color.argb(255, 225, 93, 49)),
     CRIMINAL(R.string.criminal, R.string.criminal_short, Role.RUNNER, Color.argb(255, 74, 81, 131)),
-    SHAPER(R.string.shaper, R.string.shaper_short, Role.RUNNER, Color.argb(255, 106, 147, 65)),
+    SHAPER(R.string.shaper, R.string.shaper, Role.RUNNER, Color.argb(255, 106, 147, 65)),
     HAAS_BIOROID(R.string.haas_bioroid, R.string.haas_bioroid_short, Role.CORPORATION, Color.argb(255, 100, 74, 105)),
     JINTEKI(R.string.jinteki, R.string.jinteki_short, Role.CORPORATION, Color.argb(255, 202, 80, 54)),
-    NBN(R.string.nbn, R.string.nbn_short, Role.CORPORATION, Color.argb(255, 238, 171, 45)),
-    WEYLAND(R.string.weyland, R.string.weyland_short, Role.CORPORATION, Color.argb(255, 105, 114, 99));
+    NBN(R.string.nbn, R.string.nbn, Role.CORPORATION, Color.argb(255, 238, 171, 45)),
+    WEYLAND(R.string.weyland, R.string.weyland, Role.CORPORATION, Color.argb(255, 105, 114, 99)),
+    NEUTRAL_CORP(R.string.neutral, R.string.neutral, Role.CORPORATION, Color.GRAY),
+    NEUTRAL_RUNNER(R.string.neutral, R.string.neutral, Role.RUNNER, Color.GRAY);
 
     public final int textId;
     public final int shortTextId;

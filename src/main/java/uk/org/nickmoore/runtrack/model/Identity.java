@@ -26,12 +26,12 @@ import java.util.ArrayList;
 import uk.org.nickmoore.runtrack.R;
 
 /**
- * The current list of released Identities for Netrunner.
+ * The current list of known Identities for Netrunner.
  */
 @SuppressWarnings("WeakerAccess")
 public enum Identity implements Stringable {
     NOISE(R.string.noise, Faction.ANARCH),
-    WHIZZARD(R.string.whizzard, R.string.whizzard_short, Faction.ANARCH),
+    WHIZZARD(R.string.whizzard, Faction.ANARCH),
     GABRIEL_SANTIAGO(R.string.gabe, R.string.gabe_short, Faction.CRIMINAL),
     ANDROMEDA(R.string.andromeda, R.string.andromeda_short, Faction.CRIMINAL),
     KATE_MAC_MACCAFFREY(R.string.kate, R.string.kate_short, Faction.SHAPER),
@@ -84,8 +84,18 @@ public enum Identity implements Stringable {
     TITAN_TRANSNATIONAL(R.string.titan_transnational, R.string.titan_transnational_short, Faction.WEYLAND),
     MAXX(R.string.maxx, Faction.ANARCH),
     VALENCIA_ESTEVEZ(R.string.valencia_estevez, R.string.valencia_estevez_short, Faction.ANARCH),
-    JINTEKI_BIOTECH(R.string.jinteki_biotech, R.string.jinteki_biotech_short, Faction.JINTEKI),
-    HAYLEY_KAPLAN(R.string.hayley_kaplan, R.string.hayley_kaplan_short, Faction.SHAPER);
+    JINTEKI_BIOTECH(R.string.jinteki_biotech, Faction.JINTEKI),
+    HAYLEY_KAPLAN(R.string.hayley_kaplan, R.string.hayley_kaplan_short, Faction.SHAPER),
+    ADAM(R.string.adam, R.string.adam_short, Faction.NEUTRAL_RUNNER),
+    APEX(R.string.apex, R.string.apex_short, Faction.NEUTRAL_RUNNER),
+    GEIST(R.string.geist, R.string.geist_short, Faction.CRIMINAL),
+    CYBERNETICS(R.string.cybernetics_div, R.string.cybernetics_div_short, Faction.HAAS_BIOROID),
+    HAARPSICHORD(R.string.haarpsichord, R.string.haarpsichord_short, Faction.NBN),
+    LIFE_IMAGINED(R.string.life_imagined, R.string.life_imagined_short, Faction.JINTEKI),
+    NEW_ANGELES_SOL(R.string.new_angeles_sol, R.string.new_angeles_sol_short, Faction.NBN),
+    SPARK(R.string.spark_agency, R.string.spark_agency_short, Faction.NBN),
+    SUNNY(R.string.sunny_lebeau, R.string.sunny_lebeau_short, Faction.NEUTRAL_RUNNER),
+    SYNC(R.string.sync, Faction.NBN);
 
     public final int textId;
     public final int shortTextId;
